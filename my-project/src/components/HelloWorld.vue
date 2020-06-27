@@ -1,7 +1,7 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <button v-on:click="hoge('kino')">aaa</button>
+    <button v-on:click="executeAPi('hello')">Execute API</button>
     <p>
       For a guide and recipes on how to configure / customize this project,
       <br />check out the
@@ -105,13 +105,13 @@ export default {
     msg: String,
   },
   methods: {
-    async hoge(message) {
+    async executeAPi(message) {
       // console.log(config);
       // console.log("test:", process.env.NODE_ENV);
       const api = new OrchestratorApi(config)
 
       await api.authenticate()
-      const machines = await api.robot.findAll()
+      const machines = await api.machine.findAll()
       console.table(machines)
 
       console.log(message)
