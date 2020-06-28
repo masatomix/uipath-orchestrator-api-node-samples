@@ -1,0 +1,15 @@
+{
+  "name": "sample_js",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "config": "^3.2.5",
+    "uipath-orchestrator-api-node": "^0.7.6"
+  }
+}
