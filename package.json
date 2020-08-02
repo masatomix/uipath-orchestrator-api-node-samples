@@ -1,6 +1,6 @@
 {
   "name": "samples",
-  "version": "0.0.2",
+  "version": "0.0.3-SNAPSHOT",
   "description": "UiPath Orchestrator API wrapper for Node.js samples",
   "scripts": {
     "build:ts": "cd sample_ts && npm run build",
