@@ -32,7 +32,7 @@ export default new Router({
       path: constants.path.TOP,
       name: 'home',
       component: () =>
-        import(/* webpackChunkName: "about" */ './views/Machines.vue'),
+        import(/* webpackChunkName: "about" */ './views/Settings.vue'),
     },
     {
       path: '/machines',

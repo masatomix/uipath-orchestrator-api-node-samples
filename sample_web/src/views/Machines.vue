@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card v-if="$store.state.orchestratorConfigSaved">
     <v-card-title>
       マシン一覧
       <v-spacer></v-spacer>
@@ -45,16 +45,15 @@
         <v-icon small @click="deleteItem(item)">delete</v-icon>
       </template>-->
     </v-data-table>
-    <v-alert dense type="info" dismissible v-model="clipboard"
-      >クリップボードにコピーしました</v-alert
-    >
+    <v-snackbar v-model="clipboard" bottom :timeout="2000" color="info">
+      クリップボードにコピーしました
+    </v-snackbar>
   </v-card>
 </template>
 
 <script>
 // @ is an alias to /src
 import OrchestratorApi from 'uipath-orchestrator-api-node'
-import config from 'config'
 
 export default {
   name: 'Home',
@@ -75,9 +74,15 @@ export default {
     ],
     loading: false,
   }),
+  computed: {
+    orchestratorConfigSaved() {
+      return this.$store.state.orchestratorConfigSaved
+    },
+  },
   created: async function() {
     this.executeAPI()
   },
+
   methods: {
     copyClipboard(text) {
       navigator.clipboard
@@ -85,7 +90,6 @@ export default {
         .then(() => {
           console.log('テキストコピー完了')
           this.clipboard = true
-          setTimeout(() => (this.clipboard = false), 3000)
         })
         .catch(e => {
           console.error(e)
@@ -95,9 +99,16 @@ export default {
       this.loading = true
       // console.log(config);
       // console.log("test:", process.env.NODE_ENV);
+      const config = this.getConfig()
+      alert(JSON.stringify(config))
       const api = new OrchestratorApi(config)
-
-      await api.authenticate()
+      try {
+        await api.authenticate()
+      } catch (error) {
+        this.loading = false
+        alert(error.message)
+        return
+      }
       const machines = await api.machine.findAll()
       this.machines = machines.map((machine, index) => {
         machine.dispId = index + 1
@@ -113,6 +124,14 @@ export default {
       this.loading = false
       console.table(this.machines)
       // alert(message)
+    },
+    getConfig() {
+      const selectedRobotModeFlag = this.$store.state.selectedRobotModeFlag
+      return {
+        '0': this.$store.state.enterpriseConfig,
+        '1': this.$store.state.communityConfig,
+        '2': this.$store.state.jsonConfig,
+      }[selectedRobotModeFlag]
     },
   },
   // created: function() {

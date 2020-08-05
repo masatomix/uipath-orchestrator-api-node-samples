@@ -23,6 +23,12 @@ firebase.auth().onAuthStateChanged(function(user) {
   } else {
     store.commit(constants.mutations.user, {})
     store.commit(constants.mutations.loginStatus, false)
+
+    store.commit('enterpriseConfig', {}) // インスタンスの更新
+    store.commit('communityConfig', {}) // インスタンスの更新
+    store.commit('jsonConfig', {}) // インスタンスの更新
+    store.commit('selectedRobotModeFlag', null) // インスタンスの更新
+    store.commit('orchestratorConfigSaved', false) // インスタンスの更新
   }
 })
 

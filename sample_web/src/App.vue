@@ -7,7 +7,7 @@
       v-if="loginStatus"
     >
       <v-list dense>
-        <template v-for="item in items">
+        <template v-for="item in localItems">
           <v-row v-if="item.heading" :key="item.heading" align="center">
             <v-col cols="6">
               <v-subheader v-if="item.heading">{{ item.heading }}</v-subheader>
@@ -104,16 +104,33 @@ export default {
     user() {
       return this.$store.state.user
     },
+    orchestratorConfigSaved() {
+      return this.$store.state.orchestratorConfigSaved
+    },
+    localItems() {
+      if (this.$store.state.orchestratorConfigSaved) {
+        return this.items
+      }
+      return this.items.filter(item => item.always === true)
+    },
   },
   data: () => ({
     drawer: null,
     items: [
-      { icon: 'work', text: 'マシン一覧', path: 'machines' },
+      {
+        icon: 'work',
+        text: 'マシン一覧',
+        path: 'machines',
+        always: false,
+      },
       // { icon: 'work', text: 'ロボット一覧', path: 'machines' },
       // { icon: 'work', text: 'ライセンス状態', path: 'machines' },
-      { icon: 'settings', text: '設定', path: 'settings' },
+      { icon: 'settings', text: '設定', path: 'settings', always: true },
     ],
   }),
+  // created: async function() {
+  //   this.items = this.items.map(item => item)
+  // },
   methods: {
     gotoPath: function(item) {
       this.$router.push({ path: item.path })

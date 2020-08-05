@@ -11,6 +11,11 @@ export default new Vuex.Store({
   state: {
     user: {},
     loginStatus: false,
+    enterpriseConfig: {},
+    communityConfig: {},
+    jsonConfig: {},
+    orchestratorConfigSaved: false,
+    selectedRobotModeFlag: NaN,
   },
   mutations: {
     [constants.mutations.user](state, user) {
@@ -18,6 +23,21 @@ export default new Vuex.Store({
     },
     [constants.mutations.loginStatus](state, loginStatus) {
       state.loginStatus = loginStatus
+    },
+    enterpriseConfig(state, enterpriseConfig) {
+      state.enterpriseConfig = enterpriseConfig
+    },
+    communityConfig(state, communityConfig) {
+      state.communityConfig = communityConfig
+    },
+    jsonConfig(state, jsonConfig) {
+      state.jsonConfig = jsonConfig
+    },
+    selectedRobotModeFlag(state, selectedRobotModeFlag) {
+      state.selectedRobotModeFlag = selectedRobotModeFlag
+    },
+    orchestratorConfigSaved(state, orchestratorConfigSaved) {
+      state.orchestratorConfigSaved = orchestratorConfigSaved
     },
   },
   plugins: [
