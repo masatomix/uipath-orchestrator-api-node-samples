@@ -100,7 +100,7 @@ export default {
       // console.log(config);
       // console.log("test:", process.env.NODE_ENV);
       const config = this.getConfig()
-      alert(JSON.stringify(config))
+      // alert(JSON.stringify(config))
       const api = new OrchestratorApi(config)
       try {
         await api.authenticate()
@@ -109,7 +109,12 @@ export default {
         alert(error.message)
         return
       }
-      const machines = await api.machine.findAll()
+      const machinesP = api.machine.findAll().catch(error => {
+        this.loading = false
+        alert(error)
+        return
+      })
+      const machines = await machinesP
       this.machines = machines.map((machine, index) => {
         machine.dispId = index + 1
 
