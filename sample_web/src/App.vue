@@ -6,6 +6,7 @@
       app
       v-if="loginStatus"
     >
+      <v-container> <Folders v-model="selectedFolder"/></v-container>
       <v-list dense>
         <template v-for="item in localItems">
           <v-row v-if="item.heading" :key="item.heading" align="center">
@@ -39,7 +40,8 @@
               </v-list-item-content>
             </v-list-item>
           </v-list-group>
-          <v-list-item v-else :key="item.text" @click="$router.push(item.path)">
+          <!-- <v-list-item v-else :key="item.text" @click="$router.push(item.path)"> -->
+          <v-list-item v-else :key="item.text" @click="gotoPath(item)">
             <v-list-item-action>
               <v-icon>{{ item.icon }}</v-icon>
             </v-list-item-action>
@@ -67,8 +69,8 @@
 
       <div class="flex-grow-1"></div>
 
-      <v-btn @click="logout()" v-if="loginStatus">logout</v-btn>
-      <v-btn icon>
+      <v-btn @click="logout()" v-if="loginStatus">ログアウト</v-btn>
+      <!-- <v-btn icon>
         <v-icon>mdi-apps</v-icon>
       </v-btn>
       <v-btn icon>
@@ -81,7 +83,7 @@
             alt="Vuetify"
           ></v-img>
         </v-avatar>
-      </v-btn>
+      </v-btn> -->
     </v-app-bar>
     <v-main>
       <router-view />
@@ -92,11 +94,13 @@
 <script>
 import firebase from 'firebase'
 import constants from '@/constants'
+import Folders from './components/Folders'
 
 export default {
   props: {
     source: String,
   },
+  components: { Folders },
   computed: {
     loginStatus() {
       return this.$store.state.loginStatus
@@ -118,22 +122,35 @@ export default {
     drawer: null,
     items: [
       {
-        icon: 'work',
+        icon: 'desktop_mac',
         text: 'マシン一覧',
         path: 'machines',
         always: false,
       },
-      // { icon: 'work', text: 'ロボット一覧', path: 'machines' },
+      { icon: 'android', text: 'ロボット一覧', path: 'robots' },
       // { icon: 'work', text: 'ライセンス状態', path: 'machines' },
-      { icon: 'settings', text: '設定', path: 'settings', always: true },
+      {
+        icon: 'settings',
+        text: 'Orchestrator設定一覧',
+        path: 'ocsettings',
+      },
+      {
+        icon: 'fas fa-cogs',
+        text: 'WEB設定',
+        path: 'settings',
+        always: true,
+      },
     ],
+    selectedFolder: null,
   }),
   // created: async function() {
   //   this.items = this.items.map(item => item)
   // },
   methods: {
     gotoPath: function(item) {
-      this.$router.push({ path: item.path })
+      this.$router.push({ path: item.path }).catch(() => {
+        // console.log(error.message)
+      })
     },
     logout() {
       firebase

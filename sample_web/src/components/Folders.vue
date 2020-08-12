@@ -1,0 +1,89 @@
+<template>
+  <v-select
+    v-if="orchestratorConfigSaved"
+    v-model="localValue"
+    :items="folders"
+    label="フォルダ"
+    dense
+    prepend-icon="folder_open"
+    item-text="DisplayName"
+    item-value="Id"
+    return-object
+  ></v-select>
+</template>
+
+<script>
+import { OrchestratorApi } from 'uipath-orchestrator-api-node'
+export default {
+  name: 'Folders',
+  props: {
+    value: Object,
+  },
+  components: {},
+  data: () => ({
+    folders: [],
+  }),
+  computed: {
+    orchestratorConfigSaved() {
+      return this.$store.state.orchestratorConfigSaved
+    },
+    localValue: {
+      get: function() {
+        return this.value
+      },
+      set: function(value) {
+        this.$emit('input', value) // おやでは @input に書いたメソッドがよばれる。引数にvalue
+      },
+    },
+  },
+  created: async function() {
+    this.executeAPI()
+  },
+  watch: {
+    orchestratorConfigSaved: {
+      handler: function() {
+        this.executeAPI()
+      },
+      deep: true,
+    },
+    localValue: {
+      handler: function() {
+        this.$store.commit('selectedFolder', this.localValue)
+      },
+      deep: true,
+    },
+  },
+  methods: {
+    async executeAPI() {
+      const config = this.getConfig()
+      if (config) {
+        const api = new OrchestratorApi(config)
+        try {
+          await api.authenticate()
+        } catch (error) {
+          alert(error.message)
+          return
+        }
+        const foldersP = api.folder.findAll().catch(error => {
+          alert(error)
+          return
+        })
+        const folders = await foldersP
+        this.folders = folders
+        this.localValue = folders[0]
+      }
+    },
+    getConfig() {
+      const selectedRobotModeFlag = this.$store.state.selectedRobotModeFlag
+      return {
+        '0': this.$store.state.enterpriseConfig,
+        '1': this.$store.state.communityConfig,
+        '2': this.$store.state.jsonConfig,
+      }[selectedRobotModeFlag]
+    },
+  },
+  // created: function() {
+  //   console.log(config);
+  // }
+}
+</script>

@@ -1,7 +1,7 @@
 <template>
   <v-card v-if="$store.state.orchestratorConfigSaved">
     <v-card-title>
-      マシン一覧
+      Orchestrator設定一覧
       <v-spacer></v-spacer>
       <v-text-field
         v-model="search"
@@ -10,24 +10,18 @@
         single-line
         hide-details
       ></v-text-field>
-      <v-card-actions>
-        <v-btn bottom color="blue darken-3" dark small @click="executeAPI()">
-          <v-icon>mdi-reload</v-icon>
-        </v-btn>
-        <v-btn bottom color="blue darken-3" dark small @click="downloadExcel()">
-          <v-icon>mdi-microsoft-excel</v-icon>
-        </v-btn>
-      </v-card-actions>
+      <v-btn bottom color="pink" dark fab small @click="executeAPI()">
+        <v-icon>mdi-reload</v-icon>
+      </v-btn>
     </v-card-title>
     <v-data-table
       :headers="headers"
-      :items="machines"
+      :items="instances"
       :search="search"
       :loading="loading"
       loading-text="Loading... Please wait"
-      @current-items="getFiltered"
     >
-      <template v-slot:item.RobotVersions="{ item }">
+      <!-- <template v-slot:item.RobotVersions="{ item }">
         <span>{{ item.RobotVersions.length }}</span>
       </template>
       <template v-slot:item.LicenseKey="{ item }">
@@ -44,7 +38,7 @@
           </template>
           <span>LicenseKey: {{ item.LicenseKey }}</span>
         </v-tooltip>
-      </template>
+      </template> -->
       <!-- <template v-slot:item.updatedAt="{ item }"> {{ item }}</template> -->
       <!-- <template v-slot:item.action="{ item }">
         <v-icon small class="mr-2" @click="editItem(item)">edit</v-icon>
@@ -60,23 +54,21 @@
 <script>
 // @ is an alias to /src
 import OrchestratorApi from 'uipath-orchestrator-api-node'
-import { saveAs } from 'file-saver'
+import { getConfig } from '../myUtils'
 
 export default {
   name: 'Home',
   components: {},
   data: () => ({
     search: '',
-    machines: [],
-    filteredItems: [],
+    instances: [],
     fixedHeader: true,
     clipboard: false,
     headers: [
       { text: '項番', value: 'dispId' },
-      { text: 'マシン名', value: 'Name' },
       { text: 'Id', value: 'Id' },
-      { text: 'Robot数', value: 'RobotVersions' },
-      { text: 'LicenseKey', value: 'LicenseKey' },
+      { text: 'Value', value: 'Value' },
+      { text: 'Name', value: 'Name' },
       // { text: '更新日', value: 'updatedAt' },
       // { text: '操作', align: 'center', value: 'action', sortable: false },
     ],
@@ -86,15 +78,26 @@ export default {
     orchestratorConfigSaved() {
       return this.$store.state.orchestratorConfigSaved
     },
+    selectedFolder() {
+      return this.$store.state.selectedFolder
+    },
+    selectedFolderId() {
+      return this.$store.state.selectedFolder.Id
+    },
   },
   created: async function() {
     this.executeAPI()
   },
 
-  methods: {
-    getFiltered(items) {
-      this.filteredItems = items
+  watch: {
+    selectedFolderId: {
+      handler: function() {
+        this.executeAPI()
+      },
+      deep: true,
     },
+  },
+  methods: {
     copyClipboard(text) {
       navigator.clipboard
         .writeText(text)
@@ -108,11 +111,9 @@ export default {
     },
     async executeAPI() {
       this.loading = true
-      // console.log(config);
-      // console.log("test:", process.env.NODE_ENV);
-      const config = this.getConfig()
-      // alert(JSON.stringify(config))
+      const config = getConfig(this)
       const api = new OrchestratorApi(config)
+      // api.organizationUnitId = this.selectedFolderId
       try {
         await api.authenticate()
       } catch (error) {
@@ -120,41 +121,18 @@ export default {
         alert(error.message)
         return
       }
-      const machinesP = api.machine.findAll().catch(error => {
+      const instanceP = api.setting.findAll().catch(error => {
         this.loading = false
         alert(error)
         return
       })
-      const machines = await machinesP
-      this.machines = machines.map((machine, index) => {
-        machine.dispId = index + 1
-
-        api.machine.find(machine.Id).then(value => {
-          machine.LicenseKey = value.LicenseKey
-          // console.log(value.LicenseKey)
-        })
-
-        return machine
+      this.instances = (await instanceP).map((instance, index) => {
+        instance.dispId = index + 1
+        return instance
       })
 
       this.loading = false
-      console.table(this.machines)
-      // alert(message)
-    },
-    getConfig() {
-      const selectedRobotModeFlag = this.$store.state.selectedRobotModeFlag
-      return {
-        '0': this.$store.state.enterpriseConfig,
-        '1': this.$store.state.communityConfig,
-        '2': this.$store.state.jsonConfig,
-      }[selectedRobotModeFlag]
-    },
-
-    async downloadExcel() {
-      const config = this.getConfig()
-      const api = new OrchestratorApi(config)
-      const blob = await api.robot.save2ExcelBlob(this.filteredItems)
-      saveAs(blob, 'machines.xlsx')
+      console.table(this.instances)
     },
   },
   // created: function() {

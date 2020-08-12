@@ -30,3 +30,12 @@ export const getConfigState = config => {
   }
   return { isEnterprise, isCommunity, isRobot }
 }
+
+export const getConfig = me => {
+  const selectedRobotModeFlag = me.$store.state.selectedRobotModeFlag
+  return {
+    '0': me.$store.state.enterpriseConfig,
+    '1': me.$store.state.communityConfig,
+    '2': me.$store.state.jsonConfig,
+  }[selectedRobotModeFlag]
+}
