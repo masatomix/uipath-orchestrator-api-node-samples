@@ -10,9 +10,14 @@
         single-line
         hide-details
       ></v-text-field>
-      <v-btn bottom color="pink" dark fab small @click="executeAPI()">
-        <v-icon>mdi-reload</v-icon>
-      </v-btn>
+      <v-card-actions>
+        <v-btn bottom color="blue darken-3" dark small @click="executeAPI()">
+          <v-icon>mdi-reload</v-icon>
+        </v-btn>
+        <v-btn bottom color="blue darken-3" dark small @click="downloadExcel()">
+          <v-icon>mdi-microsoft-excel</v-icon>
+        </v-btn>
+      </v-card-actions>
     </v-card-title>
     <v-data-table
       :headers="headers"
@@ -20,6 +25,7 @@
       :search="search"
       :loading="loading"
       loading-text="Loading... Please wait"
+      @current-items="getFiltered"
     >
       <!-- <template v-slot:item.RobotVersions="{ item }">
         <span>{{ item.RobotVersions.length }}</span>
@@ -55,6 +61,7 @@
 // @ is an alias to /src
 import OrchestratorApi from 'uipath-orchestrator-api-node'
 import { getConfig } from '../myUtils'
+import { saveAs } from 'file-saver'
 
 export default {
   name: 'Home',
@@ -62,6 +69,7 @@ export default {
   data: () => ({
     search: '',
     instances: [],
+    filteredItems: [],
     fixedHeader: true,
     clipboard: false,
     headers: [
@@ -98,6 +106,9 @@ export default {
     },
   },
   methods: {
+    getFiltered(items) {
+      this.filteredItems = items
+    },
     copyClipboard(text) {
       navigator.clipboard
         .writeText(text)
@@ -133,6 +144,12 @@ export default {
 
       this.loading = false
       console.table(this.instances)
+    },
+    async downloadExcel() {
+      const config = getConfig(this)
+      const api = new OrchestratorApi(config)
+      const blob = await api.setting.save2ExcelBlob(this.filteredItems)
+      saveAs(blob, 'settings.xlsx')
     },
   },
   // created: function() {
