@@ -40,6 +40,16 @@ export default new Router({
         import(/* webpackChunkName: "about" */ './views/Machines.vue'),
     },
     {
+      path: '/robots',
+      component: () =>
+        import(/* webpackChunkName: "about" */ './views/Robots.vue'),
+    },
+    {
+      path: '/ocsettings',
+      component: () =>
+        import(/* webpackChunkName: "about" */ './views/OCSettings.vue'),
+    },
+    {
       path: '/settings',
       component: () =>
         import(/* webpackChunkName: "about" */ './views/Settings.vue'),

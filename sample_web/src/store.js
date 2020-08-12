@@ -16,6 +16,7 @@ export default new Vuex.Store({
     jsonConfig: {},
     orchestratorConfigSaved: false,
     selectedRobotModeFlag: NaN,
+    selectedFolder: null,
   },
   mutations: {
     [constants.mutations.user](state, user) {
@@ -38,6 +39,9 @@ export default new Vuex.Store({
     },
     orchestratorConfigSaved(state, orchestratorConfigSaved) {
       state.orchestratorConfigSaved = orchestratorConfigSaved
+    },
+    selectedFolder(state, selectedFolder) {
+      state.selectedFolder = selectedFolder
     },
   },
   plugins: [

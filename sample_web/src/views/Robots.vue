@@ -1,7 +1,7 @@
 <template>
   <v-card v-if="$store.state.orchestratorConfigSaved">
     <v-card-title>
-      マシン一覧
+      ロボット一覧:({{ selectedFolder.DisplayName }})
       <v-spacer></v-spacer>
       <v-text-field
         v-model="search"
@@ -10,6 +10,7 @@
         single-line
         hide-details
       ></v-text-field>
+
       <v-card-actions>
         <v-btn bottom color="blue darken-3" dark small @click="executeAPI()">
           <v-icon>mdi-reload</v-icon>
@@ -21,13 +22,13 @@
     </v-card-title>
     <v-data-table
       :headers="headers"
-      :items="machines"
+      :items="robots"
       :search="search"
       :loading="loading"
       loading-text="Loading... Please wait"
       @current-items="getFiltered"
     >
-      <template v-slot:item.RobotVersions="{ item }">
+      <!-- <template v-slot:item.RobotVersions="{ item }">
         <span>{{ item.RobotVersions.length }}</span>
       </template>
       <template v-slot:item.LicenseKey="{ item }">
@@ -44,16 +45,16 @@
           </template>
           <span>LicenseKey: {{ item.LicenseKey }}</span>
         </v-tooltip>
-      </template>
+      </template>-->
       <!-- <template v-slot:item.updatedAt="{ item }"> {{ item }}</template> -->
       <!-- <template v-slot:item.action="{ item }">
         <v-icon small class="mr-2" @click="editItem(item)">edit</v-icon>
         <v-icon small @click="deleteItem(item)">delete</v-icon>
       </template>-->
     </v-data-table>
-    <v-snackbar v-model="clipboard" bottom :timeout="2000" color="info">
-      クリップボードにコピーしました
-    </v-snackbar>
+    <v-snackbar v-model="clipboard" bottom :timeout="2000" color="info"
+      >クリップボードにコピーしました</v-snackbar
+    >
   </v-card>
 </template>
 
@@ -67,16 +68,20 @@ export default {
   components: {},
   data: () => ({
     search: '',
-    machines: [],
+    robots: [],
     filteredItems: [],
     fixedHeader: true,
     clipboard: false,
     headers: [
-      { text: '項番', value: 'dispId' },
-      { text: 'マシン名', value: 'Name' },
+      // { text: '項番', value: 'dispId' },
       { text: 'Id', value: 'Id' },
-      { text: 'Robot数', value: 'RobotVersions' },
-      { text: 'LicenseKey', value: 'LicenseKey' },
+      { text: '名前', value: 'Name' },
+      { text: 'マシン', value: 'MachineName' },
+      { text: 'ユーザ名', value: 'Username' },
+      { text: 'Type', value: 'Type' },
+      { text: 'ロボットグループ', value: 'RobotEnvironments' },
+      // { text: 'Robot数', value: 'RobotVersions' },
+      // { text: 'LicenseKey', value: 'LicenseKey' },
       // { text: '更新日', value: 'updatedAt' },
       // { text: '操作', align: 'center', value: 'action', sortable: false },
     ],
@@ -86,25 +91,37 @@ export default {
     orchestratorConfigSaved() {
       return this.$store.state.orchestratorConfigSaved
     },
+    selectedFolder() {
+      return this.$store.state.selectedFolder
+    },
+    selectedFolderId() {
+      return this.$store.state.selectedFolder.Id
+    },
   },
   created: async function() {
     this.executeAPI()
   },
 
+  watch: {
+    selectedFolderId: {
+      handler: function() {
+        this.executeAPI()
+      },
+      deep: true,
+    },
+  },
   methods: {
     getFiltered(items) {
       this.filteredItems = items
     },
     copyClipboard(text) {
-      navigator.clipboard
-        .writeText(text)
-        .then(() => {
-          console.log('テキストコピー完了')
-          this.clipboard = true
-        })
-        .catch(e => {
-          console.error(e)
-        })
+      navigator.clipboard.writeText(text).then(() => {
+        // console.log('テキストコピー完了')
+        this.clipboard = true
+      })
+      // .catch(e => {
+      //   console.error(e)
+      // })
     },
     async executeAPI() {
       this.loading = true
@@ -113,6 +130,7 @@ export default {
       const config = this.getConfig()
       // alert(JSON.stringify(config))
       const api = new OrchestratorApi(config)
+      api.organizationUnitId = this.selectedFolderId
       try {
         await api.authenticate()
       } catch (error) {
@@ -120,25 +138,26 @@ export default {
         alert(error.message)
         return
       }
-      const machinesP = api.machine.findAll().catch(error => {
+      const robotsP = api.robot.findAll().catch(error => {
         this.loading = false
         alert(error)
         return
       })
-      const machines = await machinesP
-      this.machines = machines.map((machine, index) => {
-        machine.dispId = index + 1
+      const robots = await robotsP
+      this.robots = robots
+      // this.robots = robots.map((machine, index) => {
+      //   machine.dispId = index + 1
 
-        api.machine.find(machine.Id).then(value => {
-          machine.LicenseKey = value.LicenseKey
-          // console.log(value.LicenseKey)
-        })
+      //   api.machine.find(machine.Id).then(value => {
+      //     machine.LicenseKey = value.LicenseKey
+      //     // console.log(value.LicenseKey)
+      //   })
 
-        return machine
-      })
+      //   return machine
+      // })
 
       this.loading = false
-      // console.table(this.machines)
+      // console.table(this.robots)
       // alert(message)
     },
     getConfig() {
@@ -154,7 +173,7 @@ export default {
       const config = this.getConfig()
       const api = new OrchestratorApi(config)
       const blob = await api.robot.save2ExcelBlob(this.filteredItems)
-      saveAs(blob, 'machines.xlsx')
+      saveAs(blob, 'robots.xlsx')
     },
   },
   // created: function() {
