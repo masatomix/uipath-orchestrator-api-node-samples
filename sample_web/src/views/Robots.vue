@@ -115,15 +115,13 @@ export default {
       this.filteredItems = items
     },
     copyClipboard(text) {
-      navigator.clipboard
-        .writeText(text)
-        .then(() => {
-          console.log('テキストコピー完了')
-          this.clipboard = true
-        })
-        .catch(e => {
-          console.error(e)
-        })
+      navigator.clipboard.writeText(text).then(() => {
+        // console.log('テキストコピー完了')
+        this.clipboard = true
+      })
+      // .catch(e => {
+      //   console.error(e)
+      // })
     },
     async executeAPI() {
       this.loading = true
@@ -159,7 +157,7 @@ export default {
       // })
 
       this.loading = false
-      console.table(this.robots)
+      // console.table(this.robots)
       // alert(message)
     },
     getConfig() {

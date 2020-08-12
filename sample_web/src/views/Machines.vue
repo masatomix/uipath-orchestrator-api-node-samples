@@ -138,7 +138,7 @@ export default {
       })
 
       this.loading = false
-      console.table(this.machines)
+      // console.table(this.machines)
       // alert(message)
     },
     getConfig() {

@@ -143,7 +143,7 @@ export default {
       })
 
       this.loading = false
-      console.table(this.instances)
+      // console.table(this.instances)
     },
     async downloadExcel() {
       const config = getConfig(this)
