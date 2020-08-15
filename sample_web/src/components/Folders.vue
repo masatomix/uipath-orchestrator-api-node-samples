@@ -14,6 +14,7 @@
 
 <script>
 import { OrchestratorApi } from 'uipath-orchestrator-api-node'
+import { getConfig } from '../myUtils'
 export default {
   name: 'Folders',
   props: {
@@ -55,7 +56,7 @@ export default {
   },
   methods: {
     async executeAPI() {
-      const config = this.getConfig()
+      const config = getConfig(this)
       if (config) {
         const api = new OrchestratorApi(config)
         try {
@@ -72,14 +73,6 @@ export default {
         this.folders = folders
         this.localValue = folders[0]
       }
-    },
-    getConfig() {
-      const selectedRobotModeFlag = this.$store.state.selectedRobotModeFlag
-      return {
-        '0': this.$store.state.enterpriseConfig,
-        '1': this.$store.state.communityConfig,
-        '2': this.$store.state.jsonConfig,
-      }[selectedRobotModeFlag]
     },
   },
   // created: function() {

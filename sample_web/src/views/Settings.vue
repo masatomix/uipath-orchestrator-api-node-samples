@@ -33,10 +33,10 @@
         label="password"
         type="password"
       ></v-text-field>
-      <v-text-field
+      <!-- <v-text-field
         v-model="enterpriseConfig.userinfo.organizationUnit"
         label="organizationUnit"
-      ></v-text-field>
+      ></v-text-field> -->
     </v-card-text>
 
     <v-card-text v-if="selectedRobotModeFlag === '1'">
@@ -98,7 +98,7 @@ export default {
         tenancyName: 'default',
         usernameOrEmailAddress: 'admin',
         password: '',
-        organizationUnit: null,
+        // organizationUnit: null,
       },
       serverinfo: {
         servername: 'https://orchestrator.example.com',
