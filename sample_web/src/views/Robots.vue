@@ -99,7 +99,9 @@ export default {
     },
   },
   created: async function() {
-    this.executeAPI()
+    if (this.orchestratorConfigSaved) {
+      this.executeAPI()
+    }
   },
 
   watch: {
