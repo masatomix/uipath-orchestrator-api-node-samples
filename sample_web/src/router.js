@@ -50,6 +50,11 @@ export default new Router({
         import(/* webpackChunkName: "about" */ './views/OCSettings.vue'),
     },
     {
+      path: '/releases',
+      component: () =>
+        import(/* webpackChunkName: "about" */ './views/Releases.vue'),
+    },
+    {
       path: '/settings',
       component: () =>
         import(/* webpackChunkName: "about" */ './views/Settings.vue'),

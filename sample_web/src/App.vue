@@ -127,8 +127,13 @@ export default {
         path: 'machines',
         always: false,
       },
-      { icon: 'android', text: 'ロボット一覧', path: 'robots' },
+      { icon: 'fas fa-robot', text: 'ロボット一覧', path: 'robots' },
       // { icon: 'work', text: 'ライセンス状態', path: 'machines' },
+      {
+        icon: 'fas fa-rocket',
+        text: 'プロセス一覧',
+        path: 'releases',
+      },
       {
         icon: 'settings',
         text: 'Orchestrator設定一覧',
