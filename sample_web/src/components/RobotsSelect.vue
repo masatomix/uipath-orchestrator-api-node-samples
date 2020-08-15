@@ -1,5 +1,5 @@
 <template>
-  <v-select
+  <v-autocomplete
     v-if="orchestratorConfigSaved"
     v-model="localValue"
     prepend-icon="fas fa-robot"
@@ -8,7 +8,7 @@
     item-text="Name"
     item-value="Id"
     return-object
-  ></v-select>
+  ></v-autocomplete>
 </template>
 
 <script>
