@@ -10,6 +10,20 @@
         single-line
       ></v-text-field>
       <RobotsSelect v-model="selectedRobot" />
+      <v-btn
+        bottom
+        color="blue darken-3"
+        dark
+        small
+        @click="groupBy = toggleGroupBy()"
+      >
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on }">
+            <v-icon v-on="on">fas fa-robot</v-icon>
+          </template>
+          <span>ロボットグループでグルーピング</span>
+        </v-tooltip>
+      </v-btn>
       <v-card-actions>
         <v-btn
           bottom
@@ -32,7 +46,15 @@
       :loading="loading"
       loading-text="Loading... Please wait"
       @current-items="getFiltered"
+      :group-by="groupBy"
+      item-key="Name"
     >
+      <!-- show-expand -->
+      <!-- <template v-slot:expanded-item="{ item }">
+        <td :colspan="headers.length">
+          <RobotsByGroup :value="item" :selectedRobot="selectedRobot" />
+        </td>
+      </template> -->
     </v-data-table>
     <v-snackbar v-model="clipboard" bottom :timeout="2000" color="info">
       クリップボードにコピーしました
@@ -46,10 +68,11 @@ import OrchestratorApi from 'uipath-orchestrator-api-node'
 import { getConfig } from '../myUtils'
 import { saveAs } from 'file-saver'
 import RobotsSelect from '../components/RobotsSelect'
+// import RobotsByGroup from '../components/RobotsByGroup'
 
 export default {
   name: 'Home',
-  components: { RobotsSelect },
+  components: { RobotsSelect /*RobotsByGroup*/ },
   data: () => ({
     search: '',
     instances: [],
@@ -62,11 +85,13 @@ export default {
       { text: 'ProcessKey', value: 'ProcessKey' },
       { text: 'ProcessVersion', value: 'ProcessVersion' },
       { text: 'EnvironmentName', value: 'EnvironmentName' },
+      // { text: '', value: 'data-table-expand' },
       // { text: '更新日', value: 'updatedAt' },
       // { text: '操作', align: 'center', value: 'action', sortable: false },
     ],
     selectedRobot: null,
     loading: false,
+    groupBy: null,
   }),
   computed: {
     orchestratorConfigSaved() {
@@ -101,6 +126,9 @@ export default {
     },
   },
   methods: {
+    toggleGroupBy() {
+      return this.groupBy == null ? 'EnvironmentName' : null
+    },
     getFiltered(items) {
       this.filteredItems = items
     },
@@ -120,11 +148,12 @@ export default {
         return instance
       })
 
-      this.instances = filterFlag
-        ? tmp.filter(instance =>
-            this.isExecutable(instance, this.selectedRobot),
-          )
-        : tmp
+      this.instances =
+        filterFlag && this.selectedRobot
+          ? tmp.filter(instance =>
+              this.isExecutable(instance, this.selectedRobot),
+            )
+          : tmp
       this.loading = false
     },
 
