@@ -88,6 +88,10 @@
     <v-main>
       <router-view />
     </v-main>
+    <v-footer>
+      <v-spacer></v-spacer>
+      <div>&copy; Masatomi KINO. {{ new Date().getFullYear() }}</div>
+    </v-footer>
   </v-app>
 </template>
 
