@@ -12,6 +12,9 @@ import constants from '@/constants'
 firebase.initializeApp(firebaseConfig)
 // }
 firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
+firebase.analytics()
+
+Vue.prototype.$analytics = firebase.analytics()
 
 Vue.config.productionTip = false
 firebase.auth().onAuthStateChanged(function(user) {

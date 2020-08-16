@@ -88,7 +88,9 @@ export default {
     },
   },
   created: async function() {
-    this.executeAPI()
+    if (this.orchestratorConfigSaved) {
+      this.executeAPI()
+    }
   },
 
   methods: {
@@ -138,6 +140,8 @@ export default {
       })
 
       this.loading = false
+      this.$analytics.logEvent('Machines')
+
       // console.table(this.machines)
       // alert(message)
     },
