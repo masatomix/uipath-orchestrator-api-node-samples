@@ -49,6 +49,14 @@
       :group-by="groupBy"
       item-key="Name"
     >
+      <template v-slot:item.EnvironmentName="{ item }">
+        <RobotsByGroup
+          :value="item"
+          :selectedRobot="selectedRobot"
+          :ref="item.ProcessKey"
+        />
+        <a @click="openDialog(item.ProcessKey)">{{ item.EnvironmentName }}</a>
+      </template>
       <!-- show-expand -->
       <!-- <template v-slot:expanded-item="{ item }">
         <td :colspan="headers.length">
@@ -68,11 +76,11 @@ import OrchestratorApi from 'uipath-orchestrator-api-node'
 import { getConfig } from '../myUtils'
 import { saveAs } from 'file-saver'
 import RobotsSelect from '../components/RobotsSelect'
-// import RobotsByGroup from '../components/RobotsByGroup'
+import RobotsByGroup from '../components/RobotsByGroup'
 
 export default {
   name: 'Home',
-  components: { RobotsSelect /*RobotsByGroup*/ },
+  components: { RobotsSelect, RobotsByGroup },
   data: () => ({
     search: '',
     instances: [],
@@ -201,6 +209,9 @@ export default {
         )
       }
       return false
+    },
+    openDialog(processKey) {
+      this.$refs[processKey].openDialog()
     },
   },
   // created: function() {
