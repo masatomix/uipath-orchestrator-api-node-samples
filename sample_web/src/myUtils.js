@@ -24,9 +24,9 @@ export const getConfigState = config => {
     } else {
       //
     }
-    console.log(isEnterprise)
-    console.log(isCommunity)
-    console.log(isRobot)
+    // console.log(isEnterprise)
+    // console.log(isCommunity)
+    // console.log(isRobot)
   }
   return { isEnterprise, isCommunity, isRobot }
 }
@@ -38,4 +38,21 @@ export const getConfig = me => {
     '1': me.$store.state.communityConfig,
     '2': me.$store.state.jsonConfig,
   }[selectedRobotModeFlag]
+}
+
+export const isExecutable = (release, robot) => {
+  // console.log(`トレイ上のプロセス名: ${release.Name}`)
+  // console.log(`紐付くロボットグループ: ${release.EnvironmentName}`)
+  const robotEnvironments = robot.RobotEnvironments.split(',')
+  // console.log(`ロボが属するロボットグループ(配列): ${robotEnvironments}`)
+
+  if (robotEnvironments.length > 0) {
+    // ロボが属するグループ名を繰り返しチェックして、プロセスのグループ名と一致しているモノが一つでもあったらtrue/なかったらfalse
+    return (
+      robotEnvironments.filter(
+        robotEnvironment => robotEnvironment == release.EnvironmentName,
+      ).length > 0
+    )
+  }
+  return false
 }
