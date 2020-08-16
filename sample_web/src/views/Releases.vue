@@ -50,11 +50,7 @@
       item-key="Name"
     >
       <template v-slot:item.EnvironmentName="{ item }">
-        <RobotsByGroup
-          :value="item"
-          :selectedRobot="selectedRobot"
-          :ref="item.ProcessKey"
-        />
+        <RobotsByGroup :value="item" :ref="item.ProcessKey" />
         <a @click="openDialog(item.ProcessKey)">{{ item.EnvironmentName }}</a>
       </template>
       <!-- show-expand -->
@@ -73,7 +69,7 @@
 <script>
 // @ is an alias to /src
 import OrchestratorApi from 'uipath-orchestrator-api-node'
-import { getConfig } from '../myUtils'
+import { getConfig, isExecutable } from '../myUtils'
 import { saveAs } from 'file-saver'
 import RobotsSelect from '../components/RobotsSelect'
 import RobotsByGroup from '../components/RobotsByGroup'
@@ -156,11 +152,10 @@ export default {
         return instance
       })
 
+      // filterFlagがたっていて、選択されたロボットがあるかつ、そのロボットのIdが -9999 (ALL) 以外なら、フィルタする
       this.instances =
-        filterFlag && this.selectedRobot
-          ? tmp.filter(instance =>
-              this.isExecutable(instance, this.selectedRobot),
-            )
+        filterFlag && this.selectedRobot && this.selectedRobot.Id !== -9999
+          ? tmp.filter(instance => isExecutable(instance, this.selectedRobot))
           : tmp
       this.loading = false
     },
@@ -189,26 +184,6 @@ export default {
         return
       })
       return instanceP
-    },
-
-    isExecutable(release, robot) {
-      if (robot.Id === -9999) {
-        return true
-      }
-      // console.log(`トレイ上のプロセス名: ${release.Name}`)
-      // console.log(`紐付くロボットグループ: ${release.EnvironmentName}`)
-      const robotEnvironments = robot.RobotEnvironments.split(',')
-      // console.log(`ロボが属するロボットグループ(配列): ${robotEnvironments}`)
-
-      if (robotEnvironments.length > 0) {
-        // ロボが属するグループ名を繰り返しチェックして、プロセスのグループ名と一致しているモノが一つでもあったらtrue/なかったらfalse
-        return (
-          robotEnvironments.filter(
-            robotEnvironment => robotEnvironment == release.EnvironmentName,
-          ).length > 0
-        )
-      }
-      return false
     },
     openDialog(processKey) {
       this.$refs[processKey].openDialog()
