@@ -13,4 +13,14 @@ export default {
       state.loginStatus = loginStatus
     },
   },
+  actions: {
+    login(context, user) {
+      context.commit('user', user)
+      context.commit('loginStatus', true)
+    },
+    logout(context) {
+      context.commit('user', {})
+      context.commit('loginStatus', false)
+    },
+  },
 }
