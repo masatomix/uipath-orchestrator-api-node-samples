@@ -36,7 +36,7 @@ firebase.auth().onAuthStateChanged(function(user) {
 })
 
 router.beforeEach((to, from, next) => {
-  const currentUser = store.state.user
+  const currentUser = store.state.user.user
   if (currentUser.uid) {
     if (to.path === constants.path.LOGIN) {
       firebase

@@ -85,6 +85,7 @@
 // @ is an alias to /src
 import config from 'config'
 import { isEmpty, getConfigState } from '../myUtils'
+import Type from '../modules/Type'
 
 export default {
   name: 'Home',
@@ -120,14 +121,14 @@ export default {
   }),
   computed: {
     orchestratorConfigSaved() {
-      return this.$store.state.orchestratorConfigSaved
+      return this.$store.state.appStore.orchestratorConfigSaved
     },
   },
   created: function() {
     // Vuexからとる(1)。あったらコレを使う
-    const vEnterpriseConfig = this.$store.state.enterpriseConfig
-    const vCommunityConfig = this.$store.state.communityConfig
-    const vJsonConfig = this.$store.state.jsonConfig
+    const vEnterpriseConfig = this.$store.state.appStore.enterpriseConfig
+    const vCommunityConfig = this.$store.state.appStore.communityConfig
+    const vJsonConfig = this.$store.state.appStore.jsonConfig
 
     const { isEnterprise, isCommunity } = getConfigState(config)
 

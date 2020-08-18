@@ -15,6 +15,8 @@
 <script>
 import { OrchestratorApi } from 'uipath-orchestrator-api-node'
 import { getConfig } from '../myUtils'
+import Type from '../modules/Type'
+
 export default {
   name: 'Folders',
   props: {
@@ -26,7 +28,7 @@ export default {
   }),
   computed: {
     orchestratorConfigSaved() {
-      return this.$store.state.orchestratorConfigSaved
+      return this.$store.state.appStore.orchestratorConfigSaved
     },
     localValue: {
       get: function() {
@@ -49,7 +51,7 @@ export default {
     },
     localValue: {
       handler: function() {
-        this.$store.commit('selectedFolder', this.localValue)
+        this.$store.commit(Type.selectedFolder, this.localValue)
       },
       deep: true,
     },

@@ -107,16 +107,16 @@ export default {
   components: { Folders },
   computed: {
     loginStatus() {
-      return this.$store.state.loginStatus
+      return this.$store.state.user.loginStatus
     },
     user() {
-      return this.$store.state.user
+      return this.$store.state.user.user
     },
     orchestratorConfigSaved() {
-      return this.$store.state.orchestratorConfigSaved
+      return this.$store.state.appStore.orchestratorConfigSaved
     },
     localItems() {
-      if (this.$store.state.orchestratorConfigSaved) {
+      if (this.$store.state.appStore.orchestratorConfigSaved) {
         return this.items
       }
       return this.items.filter(item => item.always === true)
