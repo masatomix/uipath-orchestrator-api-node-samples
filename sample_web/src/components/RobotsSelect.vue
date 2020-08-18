@@ -59,12 +59,6 @@ export default {
       },
       deep: true,
     },
-    // localValue: {
-    //   handler: function() {
-    //     this.$store.commit(Type.selectedFolder, this.localValue)
-    //   },
-    //   deep: true,
-    // },
   },
   methods: {
     async executeAPI() {
