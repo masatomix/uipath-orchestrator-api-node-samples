@@ -6,6 +6,8 @@
     "serve": "vue-cli-service serve --mode development",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
+    "cleanDist": "rimraf dist/*",
+    "cleanNode": "npm run cleanDist && rimraf node_modules/* package-lock.json",
     "serve-p": "vue-cli-service serve --mode production"
   },
   "dependencies": {
