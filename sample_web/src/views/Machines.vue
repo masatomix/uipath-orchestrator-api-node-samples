@@ -60,6 +60,7 @@
 <script>
 // @ is an alias to /src
 import OrchestratorApi from 'uipath-orchestrator-api-node'
+import { getConfig } from '../myUtils'
 import { saveAs } from 'file-saver'
 
 export default {
@@ -112,7 +113,7 @@ export default {
       this.loading = true
       // console.log(config);
       // console.log("test:", process.env.NODE_ENV);
-      const config = this.getConfig()
+      const config = getConfig(this)
       // alert(JSON.stringify(config))
       const api = new OrchestratorApi(config)
       try {
@@ -144,14 +145,6 @@ export default {
 
       // console.table(this.machines)
       // alert(message)
-    },
-    getConfig() {
-      const selectedRobotModeFlag = this.$store.state.selectedRobotModeFlag
-      return {
-        '0': this.$store.state.enterpriseConfig,
-        '1': this.$store.state.communityConfig,
-        '2': this.$store.state.jsonConfig,
-      }[selectedRobotModeFlag]
     },
 
     async downloadExcel() {
