@@ -193,17 +193,17 @@ export default {
         '2': this.configText ? JSON.parse(this.configText) : {},
       }[selectedRobotModeFlag]
 
-      console.log(JSON.stringify(copyJSON))
+      // console.log(JSON.stringify(copyJSON))
 
       navigator.clipboard
         .writeText(JSON.stringify(copyJSON, null, 2))
         .then(() => {
-          console.log('テキストコピー完了')
+          // console.log('テキストコピー完了')
           this.clipboard = true
         })
-        .catch(e => {
-          console.error(e)
-        })
+      // .catch(e => {
+      //   console.error(e)
+      // })
     },
     toValue(robotModeFlag) {
       const map = {
