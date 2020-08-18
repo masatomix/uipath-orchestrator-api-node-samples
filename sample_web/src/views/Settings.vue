@@ -85,7 +85,6 @@
 // @ is an alias to /src
 import config from 'config'
 import { isEmpty, getConfigState } from '../myUtils'
-import Type from '../modules/Type'
 
 export default {
   name: 'Home',
@@ -162,13 +161,21 @@ export default {
       const storeConfig = selectedRobotModeFlag => {
         const map = {
           '0': () =>
-            this.$store.commit(Type.enterpriseConfig, this.enterpriseConfig), // インスタンスの更新
+            this.$store.dispatch('appStore/saveEnterpriseConfig', {
+              config: this.enterpriseConfig,
+              selectedRobotModeFlag: selectedRobotModeFlag,
+            }),
           '1': () =>
-            this.$store.commit(Type.communityConfig, this.communityConfig), // インスタンスの更新
+            this.$store.dispatch('appStore/saveCommunityConfig', {
+              config: this.communityConfig,
+              selectedRobotModeFlag: selectedRobotModeFlag,
+            }),
           '2': () => {
             try {
-              const saveConfig = JSON.parse(this.configText)
-              this.$store.commit(Type.jsonConfig, saveConfig) // インスタンスの更新
+              this.$store.dispatch('appStore/saveJsonConfig', {
+                configText: this.configText,
+                selectedRobotModeFlag: selectedRobotModeFlag,
+              })
             } catch (error) {
               alert(error)
               throw error
@@ -178,9 +185,6 @@ export default {
         return map[selectedRobotModeFlag]
       }
       storeConfig(selectedRobotModeFlag)()
-
-      this.$store.commit(Type.orchestratorConfigSaved, true) // インスタンスの更新
-      this.$store.commit(Type.selectedRobotModeFlag, selectedRobotModeFlag) // インスタンスの更新
       // 選択した方だけVuexへ保存
       this.saveFinished = true
     },

@@ -7,7 +7,6 @@ import vuetify from './plugins/vuetify'
 import firebase from 'firebase'
 import firebaseConfig from '@/firebaseConfig'
 import constants from './constants'
-import Type from './modules/Type'
 
 // if (!firebase.apps.length) {
 firebase.initializeApp(firebaseConfig)
@@ -22,17 +21,10 @@ firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
     // console.log(JSON.stringify(user));
     // User is signed in.
-    store.commit(Type.user, user)
-    store.commit(Type.loginStatus, true)
+    store.dispatch('user/login', user)
   } else {
-    store.commit(Type.user, {})
-    store.commit(Type.loginStatus, false)
-
-    store.commit(Type.enterpriseConfig, {}) // インスタンスの更新
-    store.commit(Type.communityConfig, {}) // インスタンスの更新
-    store.commit(Type.jsonConfig, {}) // インスタンスの更新
-    store.commit(Type.selectedRobotModeFlag, null) // インスタンスの更新
-    store.commit(Type.orchestratorConfigSaved, false) // インスタンスの更新
+    store.dispatch('user/logout')
+    store.dispatch('appStore/clearConfig')
   }
 })
 
