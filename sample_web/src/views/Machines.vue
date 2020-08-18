@@ -62,6 +62,7 @@
 import OrchestratorApi from 'uipath-orchestrator-api-node'
 import { getConfig } from '../myUtils'
 import { saveAs } from 'file-saver'
+import { mapState } from 'vuex'
 
 export default {
   name: 'Home',
@@ -83,11 +84,16 @@ export default {
     ],
     loading: false,
   }),
-  computed: {
-    orchestratorConfigSaved() {
-      return this.$store.state.appStore.orchestratorConfigSaved
-    },
-  },
+
+  // https://qiita.com/suin/items/7331905a45a8ff80d4dd
+  // https://qiita.com/okumurakengo/items/0521049e79f927632cab
+  // computed: {
+  //   orchestratorConfigSaved() {
+  //     return this.$store.state.appStore.orchestratorConfigSaved
+  //   },
+  // },
+  // 上記と等価
+  computed: mapState('appStore', ['orchestratorConfigSaved']),
   created: async function() {
     if (this.orchestratorConfigSaved) {
       this.executeAPI()

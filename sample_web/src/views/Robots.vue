@@ -81,6 +81,7 @@
 import OrchestratorApi from 'uipath-orchestrator-api-node'
 import { getConfig } from '../myUtils'
 import { saveAs } from 'file-saver'
+import { mapState } from 'vuex'
 
 export default {
   name: 'Home',
@@ -105,17 +106,11 @@ export default {
     loading: false,
     groupBy: null,
   }),
-  computed: {
-    orchestratorConfigSaved() {
-      return this.$store.state.appStore.orchestratorConfigSaved
-    },
-    selectedFolder() {
-      return this.$store.state.appStore.selectedFolder
-    },
-    selectedFolderId() {
-      return this.$store.state.appStore.selectedFolder.Id
-    },
-  },
+  computed: mapState('appStore', {
+    orchestratorConfigSaved: 'orchestratorConfigSaved',
+    selectedFolder: 'selectedFolder',
+    selectedFolderId: state => state.selectedFolder.Id,
+  }),
   created: async function() {
     if (this.orchestratorConfigSaved) {
       this.executeAPI()
