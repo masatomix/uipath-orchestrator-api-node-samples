@@ -87,7 +87,8 @@
 
 <script>
 import firebase from 'firebase'
-import constants from '@/constants'
+import constants from '../constants'
+import Type from '../modules/Type'
 // import 'firebaseui/dist/firebaseui.css'
 
 export default {
@@ -124,8 +125,8 @@ export default {
           this.userInfo.password,
         )
         .then(result => {
-          this.$store.commit(constants.mutations.user, result.user)
-          this.$store.commit(constants.mutations.loginStatus, true)
+          this.$store.commit(Type.user, result.user)
+          this.$store.commit(Type.loginStatus, true)
 
           this.userInfo.password = ''
           if (this.userInfo.rememberme) {
@@ -155,8 +156,8 @@ export default {
         .auth()
         .signInWithPopup(provider)
         .then(result => {
-          this.$store.commit(constants.mutations.user, result.user)
-          this.$store.commit(constants.mutations.loginStatus, true)
+          this.$store.commit(Type.user, result.user)
+          this.$store.commit(Type.loginStatus, true)
           this.$router.push(
             this.$route.query.redirect
               ? this.$route.query.redirect

@@ -162,13 +162,13 @@ export default {
       const storeConfig = selectedRobotModeFlag => {
         const map = {
           '0': () =>
-            this.$store.commit('enterpriseConfig', this.enterpriseConfig), // インスタンスの更新
+            this.$store.commit(Type.enterpriseConfig, this.enterpriseConfig), // インスタンスの更新
           '1': () =>
-            this.$store.commit('communityConfig', this.communityConfig), // インスタンスの更新
+            this.$store.commit(Type.communityConfig, this.communityConfig), // インスタンスの更新
           '2': () => {
             try {
               const saveConfig = JSON.parse(this.configText)
-              this.$store.commit('jsonConfig', saveConfig) // インスタンスの更新
+              this.$store.commit(Type.jsonConfig, saveConfig) // インスタンスの更新
             } catch (error) {
               alert(error)
               throw error
@@ -179,8 +179,8 @@ export default {
       }
       storeConfig(selectedRobotModeFlag)()
 
-      this.$store.commit('orchestratorConfigSaved', true) // インスタンスの更新
-      this.$store.commit('selectedRobotModeFlag', selectedRobotModeFlag) // インスタンスの更新
+      this.$store.commit(Type.orchestratorConfigSaved, true) // インスタンスの更新
+      this.$store.commit(Type.selectedRobotModeFlag, selectedRobotModeFlag) // インスタンスの更新
       // 選択した方だけVuexへ保存
       this.saveFinished = true
     },

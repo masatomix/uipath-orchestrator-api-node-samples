@@ -61,7 +61,7 @@ export default {
     },
     // localValue: {
     //   handler: function() {
-    //     this.$store.commit('selectedFolder', this.localValue)
+    //     this.$store.commit(Type.selectedFolder, this.localValue)
     //   },
     //   deep: true,
     // },
