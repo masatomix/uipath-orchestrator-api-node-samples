@@ -1,5 +1,5 @@
 <template>
-  <v-card v-if="$store.state.orchestratorConfigSaved">
+  <v-card v-if="orchestratorConfigSaved">
     <v-card-title>
       プロセス一覧:({{ selectedFolder.DisplayName }})
       <v-spacer></v-spacer>
@@ -99,13 +99,13 @@ export default {
   }),
   computed: {
     orchestratorConfigSaved() {
-      return this.$store.state.orchestratorConfigSaved
+      return this.$store.state.appStore.orchestratorConfigSaved
     },
     selectedFolder() {
-      return this.$store.state.selectedFolder
+      return this.$store.state.appStore.selectedFolder
     },
     selectedFolderId() {
-      return this.$store.state.selectedFolder.Id
+      return this.$store.state.appStore.selectedFolder.Id
     },
   },
   created: async function() {
