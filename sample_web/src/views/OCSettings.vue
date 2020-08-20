@@ -66,6 +66,9 @@ import { mapState } from 'vuex'
 
 export default {
   name: 'Home',
+  metaInfo: {
+    title: 'OCSettings',
+  },
   components: {},
   data: () => ({
     search: '',

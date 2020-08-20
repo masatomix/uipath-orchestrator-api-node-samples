@@ -66,6 +66,9 @@ import { mapState } from 'vuex'
 
 export default {
   name: 'Home',
+  metaInfo: {
+    title: 'Machines',
+  },
   components: {},
   data: () => ({
     search: '',
@@ -145,7 +148,7 @@ export default {
       })
 
       this.loading = false
-      this.$analytics.logEvent('Machines')
+      // this.$analytics.logEvent('Machines')
 
       // console.table(this.machines)
       // alert(message)

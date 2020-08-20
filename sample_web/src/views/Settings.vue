@@ -89,6 +89,9 @@ import { mapState } from 'vuex'
 
 export default {
   name: 'Home',
+  metaInfo: {
+    title: 'Settings',
+  },
   components: {},
   data: () => ({
     saveFinished: false, // 保存オペをしたらtrue

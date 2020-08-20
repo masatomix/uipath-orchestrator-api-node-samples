@@ -85,6 +85,9 @@ import { mapState } from 'vuex'
 
 export default {
   name: 'Home',
+  metaInfo: {
+    title: 'Robot',
+  },
   components: {},
   data: () => ({
     search: '',

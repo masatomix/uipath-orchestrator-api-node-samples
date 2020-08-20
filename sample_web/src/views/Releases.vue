@@ -77,6 +77,9 @@ import RobotsByGroup from '../components/RobotsByGroup'
 
 export default {
   name: 'Home',
+  metaInfo: {
+    title: 'Releases',
+  },
   components: { RobotsSelect, RobotsByGroup },
   data: () => ({
     search: '',
