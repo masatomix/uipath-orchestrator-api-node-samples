@@ -101,6 +101,23 @@ import constants from '@/constants'
 import Folders from './components/Folders'
 
 export default {
+  metaInfo() {
+    return {
+      // if no subcomponents specify a metaInfo.title, this title will be used
+      title: 'Default Title',
+      // all titles will be injected into this template
+      titleTemplate: name =>
+        name ? `${name} | My Orchestrator Webapp',` : 'My Orchestrator Webapp',
+      changed(metaInfo) {
+        // console.log(metaInfo.title)
+        firebase.analytics().setCurrentScreen(metaInfo.title)
+        firebase.analytics().logEvent('page_view')
+        firebase.analytics().logEvent('screen_view', {
+          screen_name: metaInfo.title,
+        })
+      },
+    }
+  },
   props: {
     source: String,
   },

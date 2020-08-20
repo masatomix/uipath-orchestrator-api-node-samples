@@ -7,10 +7,14 @@ import vuetify from './plugins/vuetify'
 import firebase from 'firebase'
 import firebaseConfig from '@/firebaseConfig'
 import constants from './constants'
+import VueMeta from 'vue-meta'
 
 // if (!firebase.apps.length) {
 firebase.initializeApp(firebaseConfig)
 // }
+
+Vue.use(VueMeta)
+
 firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
 firebase.analytics()
 
@@ -22,6 +26,10 @@ firebase.auth().onAuthStateChanged(function(user) {
     // console.log(JSON.stringify(user));
     // User is signed in.
     store.dispatch('user/login', user)
+    firebase.analytics().setUserId(user.uid)
+    firebase.analytics().setUserProperties({
+      account_type: 'Basic', // can help you to define audiences
+    })
   } else {
     store.dispatch('user/logout')
     store.dispatch('appStore/clearConfig')
