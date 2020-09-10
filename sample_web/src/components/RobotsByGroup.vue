@@ -22,7 +22,8 @@
 <script>
 // @ is an alias to /src
 import OrchestratorApi from 'uipath-orchestrator-api-node'
-import { getConfig, isExecutable } from '../myUtils'
+import { getConfig } from '../configManager'
+import { isExecutable } from '../myUtils'
 import { mapState } from 'vuex'
 
 export default {

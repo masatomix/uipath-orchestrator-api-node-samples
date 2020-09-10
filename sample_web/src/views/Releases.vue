@@ -69,7 +69,8 @@
 <script>
 // @ is an alias to /src
 import OrchestratorApi from 'uipath-orchestrator-api-node'
-import { getConfig, isExecutable } from '../myUtils'
+import { isExecutable } from '../myUtils'
+import { getConfig } from '../configManager'
 import { saveAs } from 'file-saver'
 import { mapState } from 'vuex'
 import RobotsSelect from '../components/RobotsSelect'
