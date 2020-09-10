@@ -40,7 +40,7 @@
 
 <script>
 import firebase from 'firebase'
-import constants from '@/constants'
+import constants from '../constants'
 
 export default {
   name: 'SignUp',
@@ -67,8 +67,7 @@ export default {
           this.userInfo.password,
         )
         .then(result => {
-          this.$store.commit(constants.mutations.user, result.user)
-          this.$store.commit(constants.mutations.loginStatus, true)
+          this.$store.dispatch('user/login', result.user)
           result.user
             .updateProfile({
               displayName: this.userInfo.displayName,

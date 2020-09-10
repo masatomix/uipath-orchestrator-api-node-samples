@@ -1,5 +1,5 @@
 <template>
-  <v-card v-if="$store.state.orchestratorConfigSaved">
+  <v-card v-if="orchestratorConfigSaved">
     <v-card-title>
       ロボット一覧:({{ selectedFolder.DisplayName }})
       <v-spacer></v-spacer>
@@ -81,9 +81,13 @@
 import OrchestratorApi from 'uipath-orchestrator-api-node'
 import { getConfig } from '../myUtils'
 import { saveAs } from 'file-saver'
+import { mapState } from 'vuex'
 
 export default {
   name: 'Home',
+  metaInfo: {
+    title: 'Robot',
+  },
   components: {},
   data: () => ({
     search: '',
@@ -105,17 +109,11 @@ export default {
     loading: false,
     groupBy: null,
   }),
-  computed: {
-    orchestratorConfigSaved() {
-      return this.$store.state.orchestratorConfigSaved
-    },
-    selectedFolder() {
-      return this.$store.state.selectedFolder
-    },
-    selectedFolderId() {
-      return this.$store.state.selectedFolder.Id
-    },
-  },
+  computed: mapState('appStore', {
+    orchestratorConfigSaved: 'orchestratorConfigSaved',
+    selectedFolder: 'selectedFolder',
+    selectedFolderId: state => state.selectedFolder.Id,
+  }),
   created: async function() {
     if (this.orchestratorConfigSaved) {
       this.executeAPI()

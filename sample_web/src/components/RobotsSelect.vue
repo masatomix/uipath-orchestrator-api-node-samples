@@ -26,13 +26,13 @@ export default {
   }),
   computed: {
     orchestratorConfigSaved() {
-      return this.$store.state.orchestratorConfigSaved
+      return this.$store.state.appStore.orchestratorConfigSaved
     },
     selectedFolder() {
-      return this.$store.state.selectedFolder
+      return this.$store.state.appStore.selectedFolder
     },
     selectedFolderId() {
-      return this.$store.state.selectedFolder.Id
+      return this.$store.state.appStore.selectedFolder.Id
     },
     localValue: {
       get: function() {
@@ -59,12 +59,6 @@ export default {
       },
       deep: true,
     },
-    // localValue: {
-    //   handler: function() {
-    //     this.$store.commit('selectedFolder', this.localValue)
-    //   },
-    //   deep: true,
-    // },
   },
   methods: {
     async executeAPI() {

@@ -32,11 +32,11 @@ export const getConfigState = config => {
 }
 
 export const getConfig = me => {
-  const selectedRobotModeFlag = me.$store.state.selectedRobotModeFlag
+  const selectedRobotModeFlag = me.$store.state.appStore.selectedRobotModeFlag
   return {
-    '0': me.$store.state.enterpriseConfig,
-    '1': me.$store.state.communityConfig,
-    '2': me.$store.state.jsonConfig,
+    '0': me.$store.state.appStore.enterpriseConfig,
+    '1': me.$store.state.appStore.communityConfig,
+    '2': me.$store.state.appStore.jsonConfig,
   }[selectedRobotModeFlag]
 }
 

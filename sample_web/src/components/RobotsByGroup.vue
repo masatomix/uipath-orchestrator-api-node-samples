@@ -23,6 +23,7 @@
 // @ is an alias to /src
 import OrchestratorApi from 'uipath-orchestrator-api-node'
 import { getConfig, isExecutable } from '../myUtils'
+import { mapState } from 'vuex'
 
 export default {
   props: {
@@ -37,17 +38,11 @@ export default {
     ],
     loading: false,
   }),
-  computed: {
-    orchestratorConfigSaved() {
-      return this.$store.state.orchestratorConfigSaved
-    },
-    selectedFolder() {
-      return this.$store.state.selectedFolder
-    },
-    selectedFolderId() {
-      return this.$store.state.selectedFolder.Id
-    },
-  },
+  computed: mapState('appStore', {
+    orchestratorConfigSaved: 'orchestratorConfigSaved',
+    selectedFolder: 'selectedFolder',
+    selectedFolderId: state => state.selectedFolder.Id,
+  }),
   created: async function() {
     if (this.orchestratorConfigSaved) {
       this.executeAPI()

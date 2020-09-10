@@ -1,5 +1,5 @@
 <template>
-  <v-card v-if="$store.state.orchestratorConfigSaved">
+  <v-card v-if="orchestratorConfigSaved">
     <v-card-title>
       マシン一覧
       <v-spacer></v-spacer>
@@ -60,10 +60,15 @@
 <script>
 // @ is an alias to /src
 import OrchestratorApi from 'uipath-orchestrator-api-node'
+import { getConfig } from '../myUtils'
 import { saveAs } from 'file-saver'
+import { mapState } from 'vuex'
 
 export default {
   name: 'Home',
+  metaInfo: {
+    title: 'Machines',
+  },
   components: {},
   data: () => ({
     search: '',
@@ -82,11 +87,16 @@ export default {
     ],
     loading: false,
   }),
-  computed: {
-    orchestratorConfigSaved() {
-      return this.$store.state.orchestratorConfigSaved
-    },
-  },
+
+  // https://qiita.com/suin/items/7331905a45a8ff80d4dd
+  // https://qiita.com/okumurakengo/items/0521049e79f927632cab
+  // computed: {
+  //   orchestratorConfigSaved() {
+  //     return this.$store.state.appStore.orchestratorConfigSaved
+  //   },
+  // },
+  // 上記と等価
+  computed: mapState('appStore', ['orchestratorConfigSaved']),
   created: async function() {
     if (this.orchestratorConfigSaved) {
       this.executeAPI()
@@ -98,21 +108,19 @@ export default {
       this.filteredItems = items
     },
     copyClipboard(text) {
-      navigator.clipboard
-        .writeText(text)
-        .then(() => {
-          console.log('テキストコピー完了')
-          this.clipboard = true
-        })
-        .catch(e => {
-          console.error(e)
-        })
+      navigator.clipboard.writeText(text).then(() => {
+        // console.log('テキストコピー完了')
+        this.clipboard = true
+      })
+      // .catch(e => {
+      //   console.error(e)
+      // })
     },
     async executeAPI() {
       this.loading = true
       // console.log(config);
       // console.log("test:", process.env.NODE_ENV);
-      const config = this.getConfig()
+      const config = getConfig(this)
       // alert(JSON.stringify(config))
       const api = new OrchestratorApi(config)
       try {
@@ -140,18 +148,10 @@ export default {
       })
 
       this.loading = false
-      this.$analytics.logEvent('Machines')
+      // this.$analytics.logEvent('Machines')
 
       // console.table(this.machines)
       // alert(message)
-    },
-    getConfig() {
-      const selectedRobotModeFlag = this.$store.state.selectedRobotModeFlag
-      return {
-        '0': this.$store.state.enterpriseConfig,
-        '1': this.$store.state.communityConfig,
-        '2': this.$store.state.jsonConfig,
-      }[selectedRobotModeFlag]
     },
 
     async downloadExcel() {
