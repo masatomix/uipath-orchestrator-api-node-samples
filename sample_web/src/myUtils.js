@@ -31,15 +31,6 @@ export const getConfigState = config => {
   return { isEnterprise, isCommunity, isRobot }
 }
 
-export const getConfig = me => {
-  const selectedRobotModeFlag = me.$store.state.appStore.selectedRobotModeFlag
-  return {
-    '0': me.$store.state.appStore.enterpriseConfig,
-    '1': me.$store.state.appStore.communityConfig,
-    '2': me.$store.state.appStore.jsonConfig,
-  }[selectedRobotModeFlag]
-}
-
 export const isExecutable = (release, robot) => {
   // console.log(`トレイ上のプロセス名: ${release.Name}`)
   // console.log(`紐付くロボットグループ: ${release.EnvironmentName}`)

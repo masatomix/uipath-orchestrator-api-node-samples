@@ -90,7 +90,9 @@
     </v-main>
     <v-footer>
       <v-spacer></v-spacer>
-      <div>&copy; Masatomi KINO. {{ new Date().getFullYear() }}</div>
+      <div>
+        &copy; Masatomi KINO. {{ new Date().getFullYear() }} {{ urlStr }}
+      </div>
     </v-footer>
   </v-app>
 </template>
@@ -99,6 +101,7 @@
 import firebase from 'firebase'
 import constants from '@/constants'
 import Folders from './components/Folders'
+import { getConfig } from './configManager'
 
 export default {
   metaInfo() {
@@ -137,6 +140,10 @@ export default {
         return this.items
       }
       return this.items.filter(item => item.always === true)
+    },
+    urlStr() {
+      const config = getConfig(this)
+      return config ? `(${config.serverinfo.servername})` : ''
     },
   },
   data: () => ({

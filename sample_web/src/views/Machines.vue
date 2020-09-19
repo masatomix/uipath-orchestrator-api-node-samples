@@ -60,7 +60,7 @@
 <script>
 // @ is an alias to /src
 import OrchestratorApi from 'uipath-orchestrator-api-node'
-import { getConfig } from '../myUtils'
+import { getConfig } from '../configManager'
 import { saveAs } from 'file-saver'
 import { mapState } from 'vuex'
 
@@ -155,7 +155,7 @@ export default {
     },
 
     async downloadExcel() {
-      const config = this.getConfig()
+      const config = getConfig(this)
       const api = new OrchestratorApi(config)
       const blob = await api.robot.save2ExcelBlob(this.filteredItems)
       saveAs(blob, 'machines.xlsx')

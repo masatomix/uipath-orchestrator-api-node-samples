@@ -85,6 +85,7 @@
 // @ is an alias to /src
 import config from 'config'
 import { isEmpty, getConfigState } from '../myUtils'
+import { saveConfig } from '../configManager'
 import { mapState } from 'vuex'
 
 export default {
@@ -153,40 +154,7 @@ export default {
   },
   methods: {
     save(selectedRobotModeFlag) {
-      // たぶんOK
-      // console.log(JSON.stringify(this.toValue(selectedRobotModeFlag)))
-      // console.log(JSON.stringify(this.enterpriseConfig))
-      // console.log(JSON.stringify(this.communityConfig))
-
-      const storeConfig = selectedRobotModeFlag => {
-        const map = {
-          '0': () =>
-            this.$store.dispatch('appStore/saveEnterpriseConfig', {
-              config: this.enterpriseConfig,
-              selectedRobotModeFlag: selectedRobotModeFlag,
-            }),
-          '1': () =>
-            this.$store.dispatch('appStore/saveCommunityConfig', {
-              config: this.communityConfig,
-              selectedRobotModeFlag: selectedRobotModeFlag,
-            }),
-          '2': () => {
-            try {
-              this.$store.dispatch('appStore/saveJsonConfig', {
-                configText: this.configText,
-                selectedRobotModeFlag: selectedRobotModeFlag,
-              })
-            } catch (error) {
-              alert(error)
-              throw error
-            }
-          },
-        }
-        return map[selectedRobotModeFlag]
-      }
-      storeConfig(selectedRobotModeFlag)()
-      // 選択した方だけVuexへ保存
-      this.saveFinished = true
+      saveConfig(this, selectedRobotModeFlag)
     },
 
     copyClipboard(selectedRobotModeFlag) {

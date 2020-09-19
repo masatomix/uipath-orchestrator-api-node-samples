@@ -14,7 +14,7 @@
 
 <script>
 import { OrchestratorApi } from 'uipath-orchestrator-api-node'
-import { getConfig } from '../myUtils'
+import { getConfig } from '../configManager'
 
 export default {
   name: 'Folders',
