@@ -155,7 +155,7 @@ export default {
     },
 
     async downloadExcel() {
-      const config = this.getConfig()
+      const config = getConfig(this)
       const api = new OrchestratorApi(config)
       const blob = await api.robot.save2ExcelBlob(this.filteredItems)
       saveAs(blob, 'machines.xlsx')
