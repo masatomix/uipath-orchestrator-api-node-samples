@@ -98,7 +98,7 @@ export default {
     headers: [
       // { text: '項番', value: 'dispId' },
       { text: 'Id', value: 'Id' },
-      { text: '名前', value: 'Name' },
+      { text: 'ロボット名', value: 'Name' },
       { text: 'マシン', value: 'MachineName' },
       { text: 'ユーザ名', value: 'Username' },
       { text: 'Type', value: 'Type' },

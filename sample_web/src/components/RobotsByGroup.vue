@@ -1,17 +1,21 @@
 <template>
-  <v-dialog v-model="localDialog" max-width="300px">
+  <v-dialog v-model="localDialog" max-width="500px">
     <v-simple-table>
       <template v-slot:default>
         <thead>
           <tr>
             <th class="text-left">Name</th>
             <th class="text-left">Type</th>
+            <th class="text-left">StartJobs</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="item in robots" :key="item.Name">
             <td>{{ item.Name }}</td>
             <td>{{ item.Type | toProduct }}</td>
+            <td>
+              <a @click="startJobs(value, item.Name)">ジョブ実行</a>
+            </td>
           </tr>
         </tbody>
       </template>
@@ -74,6 +78,24 @@ export default {
     },
     openDialog() {
       this.localDialog = true
+    },
+    async startJobs(process, robotName) {
+      const api = new OrchestratorApi(getConfig(this))
+      await api.authenticate()
+
+      // const robotNames: string[] = await createRobotNames(api)
+      // const processKey: string = await createProcessKey(api)
+      // console.log(process.ProcessKey)
+      // console.log(robotName)
+
+      // パラメタはプロセス名と、ロボット名
+      try {
+        const result = await api.job.startJobs(process.ProcessKey, [robotName])
+        alert(JSON.stringify(result))
+        // console.log(result.value)
+      } catch (error) {
+        alert(error.body.message)
+      }
     },
   },
   filters: {
