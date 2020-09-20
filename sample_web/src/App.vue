@@ -156,7 +156,7 @@ export default {
         always: false,
       },
       { icon: 'fas fa-robot', text: 'ロボット一覧', path: 'robots' },
-      // { icon: 'work', text: 'ライセンス状態', path: 'machines' },
+      { icon: 'work', text: 'ライセンス状態', path: 'licenses' },
       {
         icon: 'fas fa-rocket',
         text: 'プロセス一覧',
