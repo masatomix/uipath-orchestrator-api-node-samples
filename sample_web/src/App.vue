@@ -88,6 +88,12 @@
     <v-main>
       <router-view />
     </v-main>
+    <v-footer>
+      <v-spacer></v-spacer>
+      <div>
+        &copy; Masatomi KINO. {{ new Date().getFullYear() }} {{ urlStr }}
+      </div>
+    </v-footer>
   </v-app>
 </template>
 
@@ -95,27 +101,49 @@
 import firebase from 'firebase'
 import constants from '@/constants'
 import Folders from './components/Folders'
+import { getConfig } from './configManager'
 
 export default {
+  metaInfo() {
+    return {
+      // if no subcomponents specify a metaInfo.title, this title will be used
+      title: 'Default Title',
+      // all titles will be injected into this template
+      titleTemplate: name =>
+        name ? `${name} | My Orchestrator Webapp',` : 'My Orchestrator Webapp',
+      changed(metaInfo) {
+        // console.log(metaInfo.title)
+        firebase.analytics().setCurrentScreen(metaInfo.title)
+        firebase.analytics().logEvent('page_view')
+        firebase.analytics().logEvent('screen_view', {
+          screen_name: metaInfo.title,
+        })
+      },
+    }
+  },
   props: {
     source: String,
   },
   components: { Folders },
   computed: {
     loginStatus() {
-      return this.$store.state.loginStatus
+      return this.$store.state.user.loginStatus
     },
     user() {
-      return this.$store.state.user
+      return this.$store.state.user.user
     },
     orchestratorConfigSaved() {
-      return this.$store.state.orchestratorConfigSaved
+      return this.$store.state.appStore.orchestratorConfigSaved
     },
     localItems() {
-      if (this.$store.state.orchestratorConfigSaved) {
+      if (this.$store.state.appStore.orchestratorConfigSaved) {
         return this.items
       }
       return this.items.filter(item => item.always === true)
+    },
+    urlStr() {
+      const config = getConfig(this)
+      return config ? `(${config.serverinfo.servername})` : ''
     },
   },
   data: () => ({
@@ -127,8 +155,13 @@ export default {
         path: 'machines',
         always: false,
       },
-      { icon: 'android', text: 'ロボット一覧', path: 'robots' },
-      // { icon: 'work', text: 'ライセンス状態', path: 'machines' },
+      { icon: 'fas fa-robot', text: 'ロボット一覧', path: 'robots' },
+      { icon: 'work', text: 'ライセンス状態', path: 'licenses' },
+      {
+        icon: 'fas fa-rocket',
+        text: 'プロセス一覧',
+        path: 'releases',
+      },
       {
         icon: 'settings',
         text: 'Orchestrator設定一覧',

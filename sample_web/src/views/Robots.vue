@@ -1,5 +1,5 @@
 <template>
-  <v-card v-if="$store.state.orchestratorConfigSaved">
+  <v-card v-if="orchestratorConfigSaved">
     <v-card-title>
       ロボット一覧:({{ selectedFolder.DisplayName }})
       <v-spacer></v-spacer>
@@ -12,6 +12,20 @@
       ></v-text-field>
 
       <v-card-actions>
+        <v-btn
+          bottom
+          color="blue darken-3"
+          dark
+          small
+          @click="groupBy = toggleGroupBy()"
+        >
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on }">
+              <v-icon v-on="on">desktop_mac</v-icon>
+            </template>
+            <span>マシンでグルーピング</span>
+          </v-tooltip>
+        </v-btn>
         <v-btn bottom color="blue darken-3" dark small @click="executeAPI()">
           <v-icon>mdi-reload</v-icon>
         </v-btn>
@@ -27,7 +41,11 @@
       :loading="loading"
       loading-text="Loading... Please wait"
       @current-items="getFiltered"
+      :group-by="groupBy"
     >
+      <template v-slot:item.Type="{ item }">
+        {{ item.Type | toProduct }}</template
+      >
       <!-- <template v-slot:item.RobotVersions="{ item }">
         <span>{{ item.RobotVersions.length }}</span>
       </template>
@@ -61,10 +79,15 @@
 <script>
 // @ is an alias to /src
 import OrchestratorApi from 'uipath-orchestrator-api-node'
+import { getConfig } from '../configManager'
 import { saveAs } from 'file-saver'
+import { mapState } from 'vuex'
 
 export default {
   name: 'Home',
+  metaInfo: {
+    title: 'Robot',
+  },
   components: {},
   data: () => ({
     search: '',
@@ -75,31 +98,26 @@ export default {
     headers: [
       // { text: '項番', value: 'dispId' },
       { text: 'Id', value: 'Id' },
-      { text: '名前', value: 'Name' },
+      { text: 'ロボット名', value: 'Name' },
       { text: 'マシン', value: 'MachineName' },
       { text: 'ユーザ名', value: 'Username' },
       { text: 'Type', value: 'Type' },
       { text: 'ロボットグループ', value: 'RobotEnvironments' },
-      // { text: 'Robot数', value: 'RobotVersions' },
-      // { text: 'LicenseKey', value: 'LicenseKey' },
       // { text: '更新日', value: 'updatedAt' },
       // { text: '操作', align: 'center', value: 'action', sortable: false },
     ],
     loading: false,
+    groupBy: null,
   }),
-  computed: {
-    orchestratorConfigSaved() {
-      return this.$store.state.orchestratorConfigSaved
-    },
-    selectedFolder() {
-      return this.$store.state.selectedFolder
-    },
-    selectedFolderId() {
-      return this.$store.state.selectedFolder.Id
-    },
-  },
+  computed: mapState('appStore', {
+    orchestratorConfigSaved: 'orchestratorConfigSaved',
+    selectedFolder: 'selectedFolder',
+    selectedFolderId: state => state.selectedFolder.Id,
+  }),
   created: async function() {
-    this.executeAPI()
+    if (this.orchestratorConfigSaved) {
+      this.executeAPI()
+    }
   },
 
   watch: {
@@ -111,6 +129,9 @@ export default {
     },
   },
   methods: {
+    toggleGroupBy() {
+      return this.groupBy == null ? 'MachineName' : null
+    },
     getFiltered(items) {
       this.filteredItems = items
     },
@@ -127,7 +148,7 @@ export default {
       this.loading = true
       // console.log(config);
       // console.log("test:", process.env.NODE_ENV);
-      const config = this.getConfig()
+      const config = getConfig(this)
       // alert(JSON.stringify(config))
       const api = new OrchestratorApi(config)
       api.organizationUnitId = this.selectedFolderId
@@ -160,24 +181,21 @@ export default {
       // console.table(this.robots)
       // alert(message)
     },
-    getConfig() {
-      const selectedRobotModeFlag = this.$store.state.selectedRobotModeFlag
-      return {
-        '0': this.$store.state.enterpriseConfig,
-        '1': this.$store.state.communityConfig,
-        '2': this.$store.state.jsonConfig,
-      }[selectedRobotModeFlag]
-    },
 
     async downloadExcel() {
-      const config = this.getConfig()
+      const config = getConfig(this)
       const api = new OrchestratorApi(config)
       const blob = await api.robot.save2ExcelBlob(this.filteredItems)
       saveAs(blob, 'robots.xlsx')
     },
   },
-  // created: function() {
-  //   console.log(config);
-  // }
+  filters: {
+    toProduct: function(type) {
+      if (type === 'Development') {
+        return 'Studio'
+      }
+      return type
+    },
+  },
 }
 </script>

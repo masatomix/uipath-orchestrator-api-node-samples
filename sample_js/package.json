@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "config": "^3.2.5",
-    "uipath-orchestrator-api-node": "^0.7.6"
+    "config": "^3.3.1",
+    "uipath-orchestrator-api-node": "^0.7.9"
   }
 }

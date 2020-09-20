@@ -6,6 +6,8 @@
     "serve": "vue-cli-service serve --mode development",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
+    "cleanDist": "rimraf dist/*",
+    "cleanNode": "npm run cleanDist && rimraf node_modules/* package-lock.json",
     "serve-p": "vue-cli-service serve --mode production"
   },
   "dependencies": {
@@ -13,8 +15,10 @@
     "eslint-loader": "^3.0.3",
     "file-saver": "^2.0.2",
     "firebase": "^7.17.1",
-    "uipath-orchestrator-api-node": "^0.7.8",
+    "moment-timezone": "^0.5.31",
+    "uipath-orchestrator-api-node": "^0.7.9",
     "vue": "^2.6.11",
+    "vue-meta": "^2.4.0",
     "vue-router": "^3.1.5",
     "vuetify": "^2.2.11",
     "vuex": "^3.5.1",

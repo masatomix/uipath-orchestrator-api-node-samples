@@ -33,10 +33,10 @@
         label="password"
         type="password"
       ></v-text-field>
-      <v-text-field
+      <!-- <v-text-field
         v-model="enterpriseConfig.userinfo.organizationUnit"
         label="organizationUnit"
-      ></v-text-field>
+      ></v-text-field> -->
     </v-card-text>
 
     <v-card-text v-if="selectedRobotModeFlag === '1'">
@@ -85,9 +85,14 @@
 // @ is an alias to /src
 import config from 'config'
 import { isEmpty, getConfigState } from '../myUtils'
+import { saveConfig } from '../configManager'
+import { mapState } from 'vuex'
 
 export default {
   name: 'Home',
+  metaInfo: {
+    title: 'Settings',
+  },
   components: {},
   data: () => ({
     saveFinished: false, // 保存オペをしたらtrue
@@ -98,7 +103,7 @@ export default {
         tenancyName: 'default',
         usernameOrEmailAddress: 'admin',
         password: '',
-        organizationUnit: null,
+        // organizationUnit: null,
       },
       serverinfo: {
         servername: 'https://orchestrator.example.com',
@@ -118,16 +123,12 @@ export default {
     communityConfig: null,
     configText: '',
   }),
-  computed: {
-    orchestratorConfigSaved() {
-      return this.$store.state.orchestratorConfigSaved
-    },
-  },
+  computed: mapState('appStore', ['orchestratorConfigSaved']),
   created: function() {
     // Vuexからとる(1)。あったらコレを使う
-    const vEnterpriseConfig = this.$store.state.enterpriseConfig
-    const vCommunityConfig = this.$store.state.communityConfig
-    const vJsonConfig = this.$store.state.jsonConfig
+    const vEnterpriseConfig = this.$store.state.appStore.enterpriseConfig
+    const vCommunityConfig = this.$store.state.appStore.communityConfig
+    const vJsonConfig = this.$store.state.appStore.jsonConfig
 
     const { isEnterprise, isCommunity } = getConfigState(config)
 
@@ -153,35 +154,7 @@ export default {
   },
   methods: {
     save(selectedRobotModeFlag) {
-      // たぶんOK
-      // console.log(JSON.stringify(this.toValue(selectedRobotModeFlag)))
-      // console.log(JSON.stringify(this.enterpriseConfig))
-      // console.log(JSON.stringify(this.communityConfig))
-
-      const storeConfig = selectedRobotModeFlag => {
-        const map = {
-          '0': () =>
-            this.$store.commit('enterpriseConfig', this.enterpriseConfig), // インスタンスの更新
-          '1': () =>
-            this.$store.commit('communityConfig', this.communityConfig), // インスタンスの更新
-          '2': () => {
-            try {
-              const saveConfig = JSON.parse(this.configText)
-              this.$store.commit('jsonConfig', saveConfig) // インスタンスの更新
-            } catch (error) {
-              alert(error)
-              throw error
-            }
-          },
-        }
-        return map[selectedRobotModeFlag]
-      }
-      storeConfig(selectedRobotModeFlag)()
-
-      this.$store.commit('orchestratorConfigSaved', true) // インスタンスの更新
-      this.$store.commit('selectedRobotModeFlag', selectedRobotModeFlag) // インスタンスの更新
-      // 選択した方だけVuexへ保存
-      this.saveFinished = true
+      saveConfig(this, selectedRobotModeFlag)
     },
 
     copyClipboard(selectedRobotModeFlag) {
@@ -191,17 +164,17 @@ export default {
         '2': this.configText ? JSON.parse(this.configText) : {},
       }[selectedRobotModeFlag]
 
-      console.log(JSON.stringify(copyJSON))
+      // console.log(JSON.stringify(copyJSON))
 
       navigator.clipboard
         .writeText(JSON.stringify(copyJSON, null, 2))
         .then(() => {
-          console.log('テキストコピー完了')
+          // console.log('テキストコピー完了')
           this.clipboard = true
         })
-        .catch(e => {
-          console.error(e)
-        })
+      // .catch(e => {
+      //   console.error(e)
+      // })
     },
     toValue(robotModeFlag) {
       const map = {

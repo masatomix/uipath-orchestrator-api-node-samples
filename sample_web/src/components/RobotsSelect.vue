@@ -1,15 +1,14 @@
 <template>
-  <v-select
+  <v-autocomplete
     v-if="orchestratorConfigSaved"
     v-model="localValue"
-    :items="folders"
-    label="フォルダ"
-    dense
-    prepend-icon="folder_open"
-    item-text="DisplayName"
+    prepend-icon="fas fa-robot"
+    :items="instances"
+    label="ロボットでフィルタ"
+    item-text="Name"
     item-value="Id"
     return-object
-  ></v-select>
+  ></v-autocomplete>
 </template>
 
 <script>
@@ -17,17 +16,23 @@ import { OrchestratorApi } from 'uipath-orchestrator-api-node'
 import { getConfig } from '../configManager'
 
 export default {
-  name: 'Folders',
+  name: 'RobotsSelect',
   props: {
     value: Object,
   },
   components: {},
   data: () => ({
-    folders: [],
+    instances: [],
   }),
   computed: {
     orchestratorConfigSaved() {
       return this.$store.state.appStore.orchestratorConfigSaved
+    },
+    selectedFolder() {
+      return this.$store.state.appStore.selectedFolder
+    },
+    selectedFolderId() {
+      return this.$store.state.appStore.selectedFolder.Id
     },
     localValue: {
       get: function() {
@@ -42,15 +47,15 @@ export default {
     this.executeAPI()
   },
   watch: {
-    orchestratorConfigSaved: {
+    selectedFolderId: {
       handler: function() {
         this.executeAPI()
       },
       deep: true,
     },
-    localValue: {
+    orchestratorConfigSaved: {
       handler: function() {
-        this.$store.dispatch('appStore/setSelectedFolder', this.localValue)
+        this.executeAPI()
       },
       deep: true,
     },
@@ -60,24 +65,23 @@ export default {
       const config = getConfig(this)
       if (config) {
         const api = new OrchestratorApi(config)
+        api.organizationUnitId = this.selectedFolderId
         try {
           await api.authenticate()
         } catch (error) {
           alert(error.message)
           return
         }
-        const foldersP = api.folder.findAll().catch(error => {
+        const promise = api.robot.findAll().catch(error => {
           alert(error)
           return
         })
-        const folders = await foldersP
-        this.folders = folders
-        this.localValue = folders[0]
+        const instances = await promise
+        instances.unshift({ Id: -9999, Name: 'ALL' })
+        this.instances = instances
+        this.localValue = instances[0]
       }
     },
   },
-  // created: function() {
-  //   console.log(config);
-  // }
 }
 </script>

@@ -6,34 +6,38 @@ import vuetify from './plugins/vuetify'
 
 import firebase from 'firebase'
 import firebaseConfig from '@/firebaseConfig'
-import constants from '@/constants'
+import constants from './constants'
+import VueMeta from 'vue-meta'
 
 // if (!firebase.apps.length) {
 firebase.initializeApp(firebaseConfig)
 // }
+
+Vue.use(VueMeta)
+
 firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
+firebase.analytics()
+
+Vue.prototype.$analytics = firebase.analytics()
 
 Vue.config.productionTip = false
 firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
     // console.log(JSON.stringify(user));
     // User is signed in.
-    store.commit(constants.mutations.user, user)
-    store.commit(constants.mutations.loginStatus, true)
+    store.dispatch('user/login', user)
+    firebase.analytics().setUserId(user.uid)
+    firebase.analytics().setUserProperties({
+      account_type: 'Basic', // can help you to define audiences
+    })
   } else {
-    store.commit(constants.mutations.user, {})
-    store.commit(constants.mutations.loginStatus, false)
-
-    store.commit('enterpriseConfig', {}) // インスタンスの更新
-    store.commit('communityConfig', {}) // インスタンスの更新
-    store.commit('jsonConfig', {}) // インスタンスの更新
-    store.commit('selectedRobotModeFlag', null) // インスタンスの更新
-    store.commit('orchestratorConfigSaved', false) // インスタンスの更新
+    store.dispatch('user/logout')
+    store.dispatch('appStore/clearConfig')
   }
 })
 
 router.beforeEach((to, from, next) => {
-  const currentUser = store.state.user
+  const currentUser = store.state.user.user
   if (currentUser.uid) {
     if (to.path === constants.path.LOGIN) {
       firebase

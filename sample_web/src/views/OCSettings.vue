@@ -1,5 +1,5 @@
 <template>
-  <v-card v-if="$store.state.orchestratorConfigSaved">
+  <v-card v-if="orchestratorConfigSaved">
     <v-card-title>
       Orchestrator設定一覧
       <v-spacer></v-spacer>
@@ -60,11 +60,15 @@
 <script>
 // @ is an alias to /src
 import OrchestratorApi from 'uipath-orchestrator-api-node'
-import { getConfig } from '../myUtils'
+import { getConfig } from '../configManager'
 import { saveAs } from 'file-saver'
+import { mapState } from 'vuex'
 
 export default {
   name: 'Home',
+  metaInfo: {
+    title: 'OCSettings',
+  },
   components: {},
   data: () => ({
     search: '',
@@ -82,17 +86,11 @@ export default {
     ],
     loading: false,
   }),
-  computed: {
-    orchestratorConfigSaved() {
-      return this.$store.state.orchestratorConfigSaved
-    },
-    selectedFolder() {
-      return this.$store.state.selectedFolder
-    },
-    selectedFolderId() {
-      return this.$store.state.selectedFolder.Id
-    },
-  },
+  computed: mapState('appStore', {
+    orchestratorConfigSaved: 'orchestratorConfigSaved',
+    selectedFolder: 'selectedFolder',
+    selectedFolderId: state => state.selectedFolder.Id,
+  }),
   created: async function() {
     this.executeAPI()
   },
@@ -110,15 +108,13 @@ export default {
       this.filteredItems = items
     },
     copyClipboard(text) {
-      navigator.clipboard
-        .writeText(text)
-        .then(() => {
-          console.log('テキストコピー完了')
-          this.clipboard = true
-        })
-        .catch(e => {
-          console.error(e)
-        })
+      navigator.clipboard.writeText(text).then(() => {
+        // console.log('テキストコピー完了')
+        this.clipboard = true
+      })
+      // .catch(e => {
+      //   console.error(e)
+      // })
     },
     async executeAPI() {
       this.loading = true

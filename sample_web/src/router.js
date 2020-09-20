@@ -45,9 +45,19 @@ export default new Router({
         import(/* webpackChunkName: "about" */ './views/Robots.vue'),
     },
     {
+      path: '/licenses',
+      component: () =>
+        import(/* webpackChunkName: "about" */ './views/Licenses.vue'),
+    },
+    {
       path: '/ocsettings',
       component: () =>
         import(/* webpackChunkName: "about" */ './views/OCSettings.vue'),
+    },
+    {
+      path: '/releases',
+      component: () =>
+        import(/* webpackChunkName: "about" */ './views/Releases.vue'),
     },
     {
       path: '/settings',
