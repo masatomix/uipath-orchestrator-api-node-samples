@@ -3,7 +3,7 @@
     v-if="orchestratorConfigSaved"
     v-model="localValue"
     :items="folders"
-    label="フォルダ"
+    :label="$t('message.components_folder_name')"
     dense
     prepend-icon="folder_open"
     item-text="DisplayName"

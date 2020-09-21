@@ -6,7 +6,9 @@
       app
       v-if="loginStatus"
     >
-      <v-container> <Folders v-model="selectedFolder"/></v-container>
+      <v-container>
+        <Folders v-model="selectedFolder" />
+      </v-container>
       <v-list dense>
         <template v-for="item in localItems">
           <v-row v-if="item.heading" :key="item.heading" align="center">
@@ -46,7 +48,7 @@
               <v-icon>{{ item.icon }}</v-icon>
             </v-list-item-action>
             <v-list-item-content>
-              <v-list-item-title>{{ item.text }}</v-list-item-title>
+              <v-list-item-title>{{ $t(item.text) }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </template>
@@ -69,7 +71,9 @@
 
       <div class="flex-grow-1"></div>
 
-      <v-btn @click="logout()" v-if="loginStatus">ログアウト</v-btn>
+      <v-btn @click="logout()" v-if="loginStatus">{{
+        $t('message.ログアウト')
+      }}</v-btn>
       <!-- <v-btn icon>
         <v-icon>mdi-apps</v-icon>
       </v-btn>
@@ -83,7 +87,7 @@
             alt="Vuetify"
           ></v-img>
         </v-avatar>
-      </v-btn> -->
+      </v-btn>-->
     </v-app-bar>
     <v-main>
       <router-view />
@@ -145,28 +149,28 @@ export default {
     items: [
       {
         icon: 'desktop_mac',
-        text: 'マシン一覧',
+        text: 'message.menu_machines',
         path: 'machines',
         always: false,
-      },
-      { icon: 'fas fa-robot', text: 'ロボット一覧', path: 'robots' },
-      { icon: 'work', text: 'ライセンス状態', path: 'licenses' },
+      }, //マシン一覧
+      { icon: 'fas fa-robot', text: 'message.menu_robots', path: 'robots' }, //ロボット一覧
+      { icon: 'work', text: 'message.menu_licenses', path: 'licenses' }, // ライセンス状態
       {
         icon: 'fas fa-rocket',
-        text: 'プロセス一覧',
+        text: 'message.menu_releases',
         path: 'releases',
-      },
+      }, //プロセス一覧
       {
         icon: 'settings',
-        text: 'Orchestrator設定一覧',
+        text: 'message.menu_ocsettings',
         path: 'ocsettings',
-      },
+      }, //Orchestrator設定一覧'
       {
         icon: 'fas fa-cogs',
-        text: 'WEB設定',
+        text: 'message.menu_settings',
         path: 'settings',
         always: true,
-      },
+      }, //WEB設定
     ],
     selectedFolder: null,
   }),
