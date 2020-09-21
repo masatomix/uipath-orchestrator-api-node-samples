@@ -88,12 +88,7 @@
     <v-main>
       <router-view />
     </v-main>
-    <v-footer>
-      <v-spacer></v-spacer>
-      <div>
-        &copy; Masatomi KINO. {{ new Date().getFullYear() }} {{ urlStr }}
-      </div>
-    </v-footer>
+    <oc-footer />
   </v-app>
 </template>
 
@@ -101,7 +96,7 @@
 import firebase from 'firebase'
 import constants from '@/constants'
 import Folders from './components/Folders'
-import { getConfig } from './configManager'
+import OcFooter from './components/OcFooter'
 
 export default {
   metaInfo() {
@@ -110,7 +105,7 @@ export default {
       title: 'Default Title',
       // all titles will be injected into this template
       titleTemplate: name =>
-        name ? `${name} | My Orchestrator Webapp',` : 'My Orchestrator Webapp',
+        name ? `${name} | My Orchestrator Webapp` : 'My Orchestrator Webapp',
       changed(metaInfo) {
         // console.log(metaInfo.title)
         firebase.analytics().setCurrentScreen(metaInfo.title)
@@ -124,7 +119,10 @@ export default {
   props: {
     source: String,
   },
-  components: { Folders },
+  components: {
+    Folders,
+    OcFooter,
+  },
   computed: {
     loginStatus() {
       return this.$store.state.user.loginStatus
@@ -140,10 +138,6 @@ export default {
         return this.items
       }
       return this.items.filter(item => item.always === true)
-    },
-    urlStr() {
-      const config = getConfig(this)
-      return config ? `(${config.serverinfo.servername})` : ''
     },
   },
   data: () => ({
