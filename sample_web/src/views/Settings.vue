@@ -154,6 +154,7 @@ export default {
   },
   methods: {
     save(selectedRobotModeFlag) {
+      this.$store.dispatch('appStore/orchestratorConfigNotSaved')
       saveConfig(this, selectedRobotModeFlag)
     },
 

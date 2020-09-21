@@ -44,7 +44,9 @@ export default {
   watch: {
     orchestratorConfigSaved: {
       handler: function() {
-        this.executeAPI()
+        if (this.orchestratorConfigSaved) {
+          this.executeAPI()
+        }
       },
       deep: true,
     },
