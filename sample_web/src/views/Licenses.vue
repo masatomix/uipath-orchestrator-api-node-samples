@@ -354,8 +354,13 @@ export default {
     },
 
     id2RobotName(robotId) {
+      // robotId のある列について
       if (robotId) {
-        return this.robots.find(robot => robot.Id === robotId).Name
+        // 選択されたフォルダのロボットが取得できている場合
+        if (this.robots) {
+          const robot = this.robots.find(robot => robot.Id === robotId)
+          return robot ? robot.Name : '別フォルダのロボット' // そのフォルダではないロボットの場合もある
+        }
       }
       return ''
     },
