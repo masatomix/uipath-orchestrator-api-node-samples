@@ -14,7 +14,9 @@
             <td>{{ item.Name }}</td>
             <td>{{ item.Type | toProduct }}</td>
             <td>
-              <a @click="startJobs(value, item.Name)">ジョブ実行</a>
+              <a @click="startJobs(value, item.Name)">
+                {{ $t('message.ジョブ実行') }}
+              </a>
             </td>
           </tr>
         </tbody>
@@ -37,10 +39,10 @@ export default {
   data: () => ({
     robots: [],
     localDialog: false,
-    headers: [
-      { text: '名前', value: 'Name' },
-      { text: 'Type', value: 'Type' },
-    ],
+    // headers: [
+    //   { text: '名前', value: 'Name' },
+    //   { text: 'Type', value: 'Type' },
+    // ],
     loading: false,
   }),
   computed: mapState('appStore', {

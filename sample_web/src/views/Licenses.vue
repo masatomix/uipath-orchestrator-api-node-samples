@@ -13,7 +13,7 @@
     <!-- ここから重複感あり -->
     <v-card-title>
       Runtime Licenses
-      <span style="font-size: 0.8em">{{ runtimeLicensesStr }}</span>
+      <span style="font-size: 0.75em">{{ runtimeLicensesStr }}</span>
       <v-spacer></v-spacer>
       <v-text-field
         v-model="search"
@@ -35,7 +35,7 @@
             <template v-slot:activator="{ on }">
               <v-icon v-on="on">desktop_mac</v-icon>
             </template>
-            <span>マシンでグルーピング</span>
+            <span>{{ $t('message.GroupingByMachine') }}</span>
           </v-tooltip>
         </v-btn>
         <v-btn
@@ -88,7 +88,7 @@
     <!-- ここから重複感あり -->
     <v-card-title>
       Named User Licenses
-      <span style="font-size: 0.8em">{{ namedUserLicensesStr }}</span>
+      <span style="font-size: 0.75em">{{ namedUserLicensesStr }}</span>
       <v-spacer></v-spacer>
       <v-text-field
         v-model="search"
@@ -108,9 +108,9 @@
         >
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
-              <v-icon v-on="on">desktop_mac</v-icon>
+              <v-icon v-on="on">face</v-icon>
             </template>
-            <span>ユーザでグルーピング</span>
+            <span>{{ $t('message.GroupingByUser') }}</span>
           </v-tooltip>
         </v-btn>
         <v-btn
@@ -161,9 +161,9 @@
       {{ $t('message.namedUserLicenses_desc02') }}
     </v-card-text>
     <!-- ここから重複感あり -->
-    <v-snackbar v-model="clipboard" bottom :timeout="2000" color="info"
-      >クリップボードにコピーしました</v-snackbar
-    >
+    <v-snackbar v-model="clipboard" bottom :timeout="2000" color="info">
+      {{ $t('message.クリップボードにコピーしました') }}
+    </v-snackbar>
   </v-card>
 </template>
 
