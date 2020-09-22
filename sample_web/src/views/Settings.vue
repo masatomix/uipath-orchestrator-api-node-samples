@@ -18,43 +18,53 @@
     <v-card-text v-if="selectedRobotModeFlag === '0'">
       <v-text-field
         v-model="enterpriseConfig.serverinfo.servername"
-        label="servername"
+        :label="$t('message.servername')"
       ></v-text-field>
       <v-text-field
         v-model="enterpriseConfig.userinfo.tenancyName"
-        label="tenancyName"
+        :label="$t('message.tenancy_name')"
       ></v-text-field>
       <v-text-field
         v-model="enterpriseConfig.userinfo.usernameOrEmailAddress"
-        label="usernameOrEmailAddress"
+        :label="$t('message.username_or_emailAddress')"
       ></v-text-field>
       <v-text-field
         v-model="enterpriseConfig.userinfo.password"
-        label="password"
+        :label="$t('message.password')"
         type="password"
+      ></v-text-field>
+      <v-text-field
+        v-model="enterpriseConfig.token.access_token"
+        :label="$t('message.token')"
       ></v-text-field>
       <!-- <v-text-field
         v-model="enterpriseConfig.userinfo.organizationUnit"
         label="organizationUnit"
       ></v-text-field> -->
+
+      {{ enterpriseConfig }}
     </v-card-text>
 
     <v-card-text v-if="selectedRobotModeFlag === '1'">
       <v-text-field
         v-model="communityConfig.serverinfo.servername"
-        label="servername"
-      ></v-text-field>
-      <v-text-field
-        v-model="communityConfig.serverinfo.refresh_token"
-        label="refresh_token"
+        :label="$t('message.servername')"
       ></v-text-field>
       <v-text-field
         v-model="communityConfig.serverinfo.tenant_logical_name"
-        label="tenant_logical_name"
+        :label="$t('message.tenant_logical_name')"
+      ></v-text-field>
+      <v-text-field
+        v-model="communityConfig.serverinfo.refresh_token"
+        :label="$t('message.refresh_token')"
       ></v-text-field>
       <v-text-field
         v-model="communityConfig.serverinfo.client_id"
-        label="client_id"
+        :label="$t('message.client_id')"
+      ></v-text-field>
+      <v-text-field
+        v-model="communityConfig.token.access_token"
+        :label="$t('message.token')"
       ></v-text-field>
     </v-card-text>
 
@@ -110,6 +120,9 @@ export default {
       serverinfo: {
         servername: 'https://orchestrator.example.com',
       },
+      token: {
+        access_token: '',
+      },
     },
     def_communityConfig: {
       serverinfo: {
@@ -118,6 +131,9 @@ export default {
         refresh_token: '[User Key]',
         tenant_logical_name: '[Tenant Logical Name]',
         client_id: '[Client Id]]',
+      },
+      token: {
+        access_token: '',
       },
     },
     def_configText: '',

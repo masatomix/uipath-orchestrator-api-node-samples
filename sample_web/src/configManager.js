@@ -1,3 +1,5 @@
+import { OrchestratorApi } from 'uipath-orchestrator-api-node'
+
 export const getConfig = me => {
   const selectedRobotModeFlag = me.$store.state.appStore.selectedRobotModeFlag
   return {
@@ -8,23 +10,55 @@ export const getConfig = me => {
 }
 
 export const saveConfig = (me, selectedRobotModeFlag) => {
+  const getApi = config => {
+    const api = new OrchestratorApi(config)
+    const authPromise = api
+      .authenticate()
+      .catch(error => alert('MyError' + error))
+    // .then(() => {
+    //   // 左辺は最終的に Vuexへ保存されるインスタンス(GUIのボックスに該当)
+    //   config.token.access_token = api.accessToken
+    // })
+    return { api, authPromise }
+  }
+
   const storeConfig = selectedRobotModeFlag => {
     const map = {
-      '0': () =>
-        me.$store.dispatch('appStore/saveEnterpriseConfig', {
-          config: me.enterpriseConfig,
-          selectedRobotModeFlag: selectedRobotModeFlag,
-        }),
-      '1': () =>
-        me.$store.dispatch('appStore/saveCommunityConfig', {
-          config: me.communityConfig,
-          selectedRobotModeFlag: selectedRobotModeFlag,
-        }),
+      '0': () => {
+        const { api, authPromise } = getApi(me.enterpriseConfig)
+        authPromise.then(() => {
+          // enterpriseConfig.token.access_token が空の場合だけ認証がおこなわれて、
+          // 結果が api.accessToken から取得できるので、それで上書きする。
+          me.enterpriseConfig.token.access_token = api.accessToken
+          me.$store.dispatch('appStore/saveEnterpriseConfig', {
+            config: me.enterpriseConfig,
+            selectedRobotModeFlag: selectedRobotModeFlag,
+          })
+        })
+      },
+      '1': () => {
+        const { api, authPromise } = getApi(me.communityConfig)
+        authPromise.then(() => {
+          me.communityConfig.token.access_token = api.accessToken
+          me.$store.dispatch('appStore/saveCommunityConfig', {
+            config: me.communityConfig,
+            selectedRobotModeFlag: selectedRobotModeFlag,
+          })
+        })
+      },
       '2': () => {
         try {
-          me.$store.dispatch('appStore/saveJsonConfig', {
-            configText: me.configText,
-            selectedRobotModeFlag: selectedRobotModeFlag,
+          const jsonConfig = JSON.parse(me.configText)
+          const { api, authPromise } = getApi(jsonConfig)
+          authPromise.then(() => {
+            Object.assign(jsonConfig, {
+              token: { access_token: api.accessToken },
+            })
+            me.configText = JSON.stringify(jsonConfig)
+            me.$store.dispatch('appStore/saveJsonConfig', {
+              configText: me.configText,
+              selectedRobotModeFlag: selectedRobotModeFlag,
+            })
           })
         } catch (error) {
           alert(error)

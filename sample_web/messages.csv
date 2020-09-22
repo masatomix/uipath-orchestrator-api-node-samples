@@ -52,3 +52,11 @@ GroupingByUser,ユーザでグルーピング,Grouping by User
 FilteringByRobot,ロボットでフィルタ,Filtering by Robot
 AppName,Orchestrator API Samples,Orchestrator API Samples
 ジョブ実行,ジョブ実行,Start Job.
+servername,Server Name (必須),Server Name (required)
+tenancy_name,Tenancy Name (tokenを使うときはオプション),Tenancy Name (optional when using token)
+username_or_emailAddress,Username Or EmailAddress (tokenを使うときはオプション),Username Or EmailAddress (optional when using token)
+password,Password (tokenを使うときはオプション),Password (optional when using token)
+token,token (オプション),token (optional)
+tenant_logical_name,テナントの論理名 (必須),Tenant Logical Name (required)
+refresh_token,Refresh Token (tokenを使うときはオプション),Refresh Token (optional when using token)
+client_id,クライアント ID (tokenを使うときはオプション),Client Id (optional when using token)
