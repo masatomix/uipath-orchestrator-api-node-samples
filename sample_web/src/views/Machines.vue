@@ -1,7 +1,7 @@
 <template>
   <v-card v-if="orchestratorConfigSaved">
     <v-card-title>
-      マシン一覧
+      {{ $t('message.menu_machines') }}
       <v-spacer></v-spacer>
       <v-text-field
         v-model="search"
@@ -76,15 +76,6 @@ export default {
     filteredItems: [],
     fixedHeader: true,
     clipboard: false,
-    headers: [
-      { text: '項番', value: 'dispId' },
-      { text: 'マシン名', value: 'Name' },
-      { text: 'Id', value: 'Id' },
-      { text: 'Robot数', value: 'RobotVersions' },
-      { text: 'LicenseKey', value: 'LicenseKey' },
-      // { text: '更新日', value: 'updatedAt' },
-      // { text: '操作', align: 'center', value: 'action', sortable: false },
-    ],
     loading: false,
   }),
 
@@ -96,7 +87,22 @@ export default {
   //   },
   // },
   // 上記と等価
-  computed: mapState('appStore', ['orchestratorConfigSaved']),
+  computed: {
+    ...mapState('appStore', {
+      orchestratorConfigSaved: 'orchestratorConfigSaved',
+    }),
+    headers() {
+      return [
+        { text: this.$t('message.項番'), value: 'dispId' },
+        { text: this.$t('message.マシン名'), value: 'Name' },
+        { text: 'Id', value: 'Id' },
+        { text: this.$t('message.ロボット数'), value: 'RobotVersions' },
+        { text: this.$t('message.LicenseKey'), value: 'LicenseKey' },
+        // { text: '更新日', value: 'updatedAt' },
+        // { text: '操作', align: 'center', value: 'action', sortable: false },
+      ]
+    },
+  },
   created: async function() {
     if (this.orchestratorConfigSaved) {
       this.executeAPI()
