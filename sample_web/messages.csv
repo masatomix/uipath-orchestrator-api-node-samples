@@ -1,0 +1,54 @@
+﻿key,ja,en
+components_folder_name,フォルダ,Folder
+runtimeLicenses_desc01,・実行中/トレイ起動中：OC画面の「使用済み」と同じ。ロボットがトレイで起動中・ワークフロー実行中などのロボットの数。,"Executing Count :  Same as ""USED"" on the OC screen. The number of robots that are running in the tray or running a workflow.
+"
+runtimeLicenses_desc02,・ライセンス取得済み？：OC画面の「ライセンス状況」のこと。ライセンスが割り当てられていて、実行可能な状態のこと。,"Licensed? : Same as ""LICENSE STATUS"" on the OC screen. The machine is licensed and ready to run.
+"
+runtimeLicenses_desc03,・接続済み？は、Windows上でRobotサービスが起動していて、OCへ接続済みかどうか。,"""Online?""  is whether the Robot service is running on Windows and is connected to the OC."
+runtimeLicenses_desc04,・アクティブ？もOC画面上のOn/Offスイッチの状態のこと。無効化されて、動かない状態にしてあったりすると、false。,"""Active?"" Is the state of the On / Off switch on the OC screen."
+namedUserLicenses_desc01,・ライセンス取得済み？：OC画面の「ライセンス状況」 のこと。ライセンス取得日時と、その時からの経過時間を表示します。,"Licensed? :  Same as ""LICENSE STATUS"" on the OC screen. The license acquisition date and time and the elapsed time from that time are displayed."
+namedUserLicenses_desc02,・ライセンス取得済みのばあい、取得したマシン名とロボット名も表示します。,"If ""Licensed?"" Is true, the acquired machine name and robot name are also displayed."
+licenses_header2_UserName,ユーザ名,UserName
+day,日,d
+hour,時間,h
+min,分,m
+sec,秒,s
+menu_machines,マシン一覧,Machines
+menu_robots,ロボット一覧,Robots
+menu_licenses,ライセンス状態,Licenses Status
+menu_releases,プロセス一覧,Processes
+menu_ocsettings,Orchestrator設定一覧,Orchestrator Settings
+menu_settings,WEB設定,Web Settings
+別フォルダのロボット,別フォルダのロボット,Robot in another folder
+ログアウト,ログアウト,Logout
+台,台,units
+RobotType,RobotType,RobotType
+マシン名,マシン名,Machine Name
+最大実行可能数,最大実行可能数,Runtimes
+ロボット数,ロボット数,Robots Count
+実行中/トレイ起動中,実行中/トレイ起動中,Executing Count
+ライセンス取得済み？,ライセンス取得済み？,Licensed?
+接続済み？,接続済み？,Online?
+アクティブ？,アクティブ？,Active?
+ユーザ名,ユーザ名,User Name
+マシン名(s),マシン名(s),Machine Names
+ライセンス取得済み？/取得日時,ライセンス取得済み？/取得日時,Licensed?
+取得マシン(s),取得マシン(s),Active Machine Names
+取得ロボット,取得ロボット,Active Robot
+Enterprise版,Enterprise版,Enterprise Edition
+Community版,Community版,Community Edition
+JSONで指定,JSONで指定,Set using JSON
+クリップボードにコピーしました,クリップボードにコピーしました,Copied to clipboard!
+保存,保存,Save
+JSONで直接記述してください,JSONで直接記述してください,Please describe it directly in JSON.
+保存完了です,保存完了です,Saved.
+項番,項番,No.
+LicenseKey,LicenseKey,LicenseKey
+ロボット名,ロボット名,Robot Name
+ロボットグループ,ロボットグループ,Robot Group
+GroupingByRobotGroup,ロボットグループでグルーピング,Grouping by RobotGroup
+GroupingByMachine,マシンでグルーピング,Grouping by Machine
+GroupingByUser,ユーザでグルーピング,Grouping by User
+FilteringByRobot,ロボットでフィルタ,Filtering by Robot
+AppName,Orchestrator API Samples,Orchestrator API Samples
+ジョブ実行,ジョブ実行,Start Job.

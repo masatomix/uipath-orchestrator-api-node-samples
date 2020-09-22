@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-card-title>
-      設定
+      {{ $t('message.menu_settings') }}
       <v-spacer></v-spacer>
     </v-card-title>
 
@@ -10,7 +10,7 @@
         <v-radio
           v-for="(robotModeFlag, i) in ['0', '1', '2']"
           :key="i"
-          :label="toValue(robotModeFlag)"
+          :label="$t(toValue(robotModeFlag))"
           :value="robotModeFlag"
         ></v-radio>
       </v-radio-group>
@@ -61,23 +61,25 @@
     <v-card-text v-if="selectedRobotModeFlag === '2'">
       <v-textarea
         name="input-7-1"
-        label="JSONで直接記述してください"
+        :label="$t('message.JSONで直接記述してください')"
         v-model="configText"
         rows="13"
       ></v-textarea>
     </v-card-text>
     <v-card-actions>
-      <v-btn v-on:click="save(selectedRobotModeFlag)">保存</v-btn>
+      <v-btn v-on:click="save(selectedRobotModeFlag)">
+        {{ $t('message.保存') }}
+      </v-btn>
       <v-btn v-on:click="copyClipboard(selectedRobotModeFlag)">
         <v-icon>assignment</v-icon>
       </v-btn>
     </v-card-actions>
-    <v-snackbar v-model="saveFinished" bottom :timeout="3000" color="info"
-      >保存完了です</v-snackbar
-    >
-    <v-snackbar v-model="clipboard" bottom :timeout="2000" color="info"
-      >クリップボードにコピーしました</v-snackbar
-    >
+    <v-snackbar v-model="saveFinished" bottom :timeout="3000" color="info">
+      {{ $t('message.保存完了です') }}
+    </v-snackbar>
+    <v-snackbar v-model="clipboard" bottom :timeout="2000" color="info">
+      {{ $t('message.クリップボードにコピーしました') }}
+    </v-snackbar>
   </v-card>
 </template>
 
@@ -154,6 +156,7 @@ export default {
   },
   methods: {
     save(selectedRobotModeFlag) {
+      this.$store.dispatch('appStore/orchestratorConfigNotSaved')
       saveConfig(this, selectedRobotModeFlag)
     },
 
@@ -178,9 +181,9 @@ export default {
     },
     toValue(robotModeFlag) {
       const map = {
-        '0': 'Enterprise版',
-        '1': 'Community版',
-        '2': 'JSONで指定',
+        '0': 'message.Enterprise版',
+        '1': 'message.Community版',
+        '2': 'message.JSONで指定',
       }
       return map[robotModeFlag]
     },

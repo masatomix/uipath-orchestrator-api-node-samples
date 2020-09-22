@@ -1,7 +1,7 @@
 <template>
   <v-card v-if="orchestratorConfigSaved">
     <v-card-title>
-      Orchestrator設定一覧
+      {{ $t('message.menu_ocsettings') }}
       <v-spacer></v-spacer>
       <v-text-field
         v-model="search"
@@ -52,7 +52,7 @@
       </template>-->
     </v-data-table>
     <v-snackbar v-model="clipboard" bottom :timeout="2000" color="info">
-      クリップボードにコピーしました
+      {{ $t('message.クリップボードにコピーしました') }}
     </v-snackbar>
   </v-card>
 </template>
@@ -76,21 +76,25 @@ export default {
     filteredItems: [],
     fixedHeader: true,
     clipboard: false,
-    headers: [
-      { text: '項番', value: 'dispId' },
-      { text: 'Id', value: 'Id' },
-      { text: 'Value', value: 'Value' },
-      { text: 'Name', value: 'Name' },
-      // { text: '更新日', value: 'updatedAt' },
-      // { text: '操作', align: 'center', value: 'action', sortable: false },
-    ],
     loading: false,
   }),
-  computed: mapState('appStore', {
-    orchestratorConfigSaved: 'orchestratorConfigSaved',
-    selectedFolder: 'selectedFolder',
-    selectedFolderId: state => state.selectedFolder.Id,
-  }),
+  computed: {
+    ...mapState('appStore', {
+      orchestratorConfigSaved: 'orchestratorConfigSaved',
+      selectedFolder: 'selectedFolder',
+      selectedFolderId: state => state.selectedFolder.Id,
+    }),
+    headers() {
+      return [
+        { text: this.$t('message.項番'), value: 'dispId' },
+        { text: 'Id', value: 'Id' },
+        { text: 'Value', value: 'Value' },
+        { text: 'Name', value: 'Name' },
+        // { text: '更新日', value: 'updatedAt' },
+        // { text: '操作', align: 'center', value: 'action', sortable: false },
+      ]
+    },
+  },
   created: async function() {
     this.executeAPI()
   },

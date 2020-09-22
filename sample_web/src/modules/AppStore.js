@@ -29,6 +29,9 @@ export default {
     },
   },
   actions: {
+    orchestratorConfigNotSaved(context) {
+      context.commit('orchestratorConfigSaved', false)
+    },
     saveEnterpriseConfig(context, payload) {
       context.commit('enterpriseConfig', payload.config)
       context.commit('orchestratorConfigSaved', true)

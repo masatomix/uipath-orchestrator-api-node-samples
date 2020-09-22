@@ -8,12 +8,16 @@ import firebase from 'firebase'
 import firebaseConfig from '@/firebaseConfig'
 import constants from './constants'
 import VueMeta from 'vue-meta'
+import VueI18n from 'vue-i18n'
+import FlagIcon from 'vue-flag-icon'
 
 // if (!firebase.apps.length) {
 firebase.initializeApp(firebaseConfig)
 // }
 
 Vue.use(VueMeta)
+Vue.use(VueI18n) // cf. https://note.com/thiroyoshi/n/n88bb060bf325
+Vue.use(FlagIcon)
 
 firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
 firebase.analytics()
@@ -64,9 +68,20 @@ router.beforeEach((to, from, next) => {
     }
   }
 })
+
+const i18n = new VueI18n({
+  locale: 'ja',
+  // messages: {
+  //   ja: require('../lang/ja.json'),
+  //   en: require('../lang/en.json'),
+  // },
+  messages: require('./lang.json'),
+})
+
 new Vue({
   router,
   store,
   vuetify,
+  i18n,
   render: h => h(App),
 }).$mount('#app')

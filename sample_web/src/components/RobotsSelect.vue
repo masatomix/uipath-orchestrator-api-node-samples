@@ -4,7 +4,7 @@
     v-model="localValue"
     prepend-icon="fas fa-robot"
     :items="instances"
-    label="ロボットでフィルタ"
+    :label="$t('message.FilteringByRobot')"
     item-text="Name"
     item-value="Id"
     return-object

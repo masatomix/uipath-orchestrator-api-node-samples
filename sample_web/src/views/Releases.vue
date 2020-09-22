@@ -1,7 +1,7 @@
 <template>
   <v-card v-if="orchestratorConfigSaved">
     <v-card-title>
-      プロセス一覧:({{ selectedFolder.DisplayName }})
+      {{ $t('message.menu_releases') }}: ({{ selectedFolder.DisplayName }})
       <v-spacer></v-spacer>
       <v-text-field
         v-model="search"
@@ -21,7 +21,7 @@
           <template v-slot:activator="{ on }">
             <v-icon v-on="on">fas fa-robot</v-icon>
           </template>
-          <span>ロボットグループでグルーピング</span>
+          <span>{{ $t('message.GroupingByRobotGroup') }}</span>
         </v-tooltip>
       </v-btn>
       <v-card-actions>
@@ -61,7 +61,7 @@
       </template> -->
     </v-data-table>
     <v-snackbar v-model="clipboard" bottom :timeout="2000" color="info">
-      クリップボードにコピーしました
+      {{ $t('message.クリップボードにコピーしました') }}
     </v-snackbar>
   </v-card>
 </template>
@@ -88,25 +88,30 @@ export default {
     filteredItems: [],
     fixedHeader: true,
     clipboard: false,
-    headers: [
-      { text: '項番', value: 'dispId' },
-      // { text: 'Name', value: 'Name' },
-      { text: 'ProcessKey', value: 'ProcessKey' },
-      { text: 'ProcessVersion', value: 'ProcessVersion' },
-      { text: 'EnvironmentName', value: 'EnvironmentName' },
-      // { text: '', value: 'data-table-expand' },
-      // { text: '更新日', value: 'updatedAt' },
-      // { text: '操作', align: 'center', value: 'action', sortable: false },
-    ],
     selectedRobot: null,
     loading: false,
     groupBy: null,
   }),
-  computed: mapState('appStore', {
-    orchestratorConfigSaved: 'orchestratorConfigSaved',
-    selectedFolder: 'selectedFolder',
-    selectedFolderId: state => state.selectedFolder.Id,
-  }),
+  computed: {
+    ...mapState('appStore', {
+      orchestratorConfigSaved: 'orchestratorConfigSaved',
+      selectedFolder: 'selectedFolder',
+      selectedFolderId: state => state.selectedFolder.Id,
+    }),
+
+    headers() {
+      return [
+        { text: this.$t('message.項番'), value: 'dispId' },
+        // { text: 'Name', value: 'Name' },
+        { text: 'Process Key', value: 'ProcessKey' },
+        { text: 'Process Version', value: 'ProcessVersion' },
+        { text: this.$t('message.ロボットグループ'), value: 'EnvironmentName' },
+        // { text: '', value: 'data-table-expand' },
+        // { text: '更新日', value: 'updatedAt' },
+        // { text: '操作', align: 'center', value: 'action', sortable: false },
+      ]
+    },
+  },
   created: async function() {
     if (this.orchestratorConfigSaved) {
       this.executeAPI()
