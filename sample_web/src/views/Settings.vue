@@ -41,8 +41,6 @@
         v-model="enterpriseConfig.userinfo.organizationUnit"
         label="organizationUnit"
       ></v-text-field> -->
-
-      {{ enterpriseConfig }}
     </v-card-text>
 
     <v-card-text v-if="selectedRobotModeFlag === '1'">
