@@ -1,7 +1,7 @@
 <template>
   <v-card v-if="orchestratorConfigSaved">
     <v-card-title>
-      ロボット一覧:({{ selectedFolder.DisplayName }})
+      {{ $t('message.menu_robots') }}: ({{ selectedFolder.DisplayName }})
       <v-spacer></v-spacer>
       <v-text-field
         v-model="search"
@@ -95,25 +95,32 @@ export default {
     filteredItems: [],
     fixedHeader: true,
     clipboard: false,
-    headers: [
-      // { text: '項番', value: 'dispId' },
-      { text: 'Id', value: 'Id' },
-      { text: 'ロボット名', value: 'Name' },
-      { text: 'マシン', value: 'MachineName' },
-      { text: 'ユーザ名', value: 'Username' },
-      { text: 'Type', value: 'Type' },
-      { text: 'ロボットグループ', value: 'RobotEnvironments' },
-      // { text: '更新日', value: 'updatedAt' },
-      // { text: '操作', align: 'center', value: 'action', sortable: false },
-    ],
     loading: false,
     groupBy: null,
   }),
-  computed: mapState('appStore', {
-    orchestratorConfigSaved: 'orchestratorConfigSaved',
-    selectedFolder: 'selectedFolder',
-    selectedFolderId: state => state.selectedFolder.Id,
-  }),
+  computed: {
+    ...mapState('appStore', {
+      orchestratorConfigSaved: 'orchestratorConfigSaved',
+      selectedFolder: 'selectedFolder',
+      selectedFolderId: state => state.selectedFolder.Id,
+    }),
+    headers() {
+      return [
+        // { text: '項番', value: 'dispId' },
+        { text: 'Id', value: 'Id' },
+        { text: this.$t('message.ロボット名'), value: 'Name' },
+        { text: this.$t('message.マシン名'), value: 'MachineName' },
+        { text: this.$t('message.ユーザ名'), value: 'Username' },
+        { text: this.$t('message.RobotType'), value: 'Type' },
+        {
+          text: this.$t('message.ロボットグループ'),
+          value: 'RobotEnvironments',
+        },
+        // { text: '更新日', value: 'updatedAt' },
+        // { text: '操作', align: 'center', value: 'action', sortable: false },
+      ]
+    },
+  },
   created: async function() {
     if (this.orchestratorConfigSaved) {
       this.executeAPI()
