@@ -46,3 +46,7 @@ JSONで直接記述してください,JSONで直接記述してください,Plea
 LicenseKey,LicenseKey,LicenseKey
 ロボット名,ロボット名,Robot Name
 ロボットグループ,ロボットグループ,Robot Group
+GroupingByRobotGroup,ロボットグループでグルーピング,Grouping by RobotGroup
+GroupingByMachine,マシンでグルーピング,Grouping by Machine
+GroupingByUser,ユーザでグルーピング,Grouping by User
+FilteringByRobot,ロボットでフィルタ,Filtering by Robot

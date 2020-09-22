@@ -1,7 +1,7 @@
 <template>
   <v-card v-if="orchestratorConfigSaved">
     <v-card-title>
-      Orchestrator設定一覧
+      {{ $t('message.menu_ocsettings') }}
       <v-spacer></v-spacer>
       <v-text-field
         v-model="search"

@@ -35,7 +35,7 @@
             <template v-slot:activator="{ on }">
               <v-icon v-on="on">desktop_mac</v-icon>
             </template>
-            <span>マシンでグルーピング</span>
+            <span>{{ $t('message.GroupingByMachine') }}</span>
           </v-tooltip>
         </v-btn>
         <v-btn
@@ -108,9 +108,9 @@
         >
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
-              <v-icon v-on="on">desktop_mac</v-icon>
+              <v-icon v-on="on">face</v-icon>
             </template>
-            <span>ユーザでグルーピング</span>
+            <span>{{ $t('message.GroupingByUser') }}</span>
           </v-tooltip>
         </v-btn>
         <v-btn

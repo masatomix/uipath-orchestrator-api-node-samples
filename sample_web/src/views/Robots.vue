@@ -23,7 +23,7 @@
             <template v-slot:activator="{ on }">
               <v-icon v-on="on">desktop_mac</v-icon>
             </template>
-            <span>マシンでグルーピング</span>
+            <span>{{ $t('message.GroupingByMachine') }}</span>
           </v-tooltip>
         </v-btn>
         <v-btn bottom color="blue darken-3" dark small @click="executeAPI()">

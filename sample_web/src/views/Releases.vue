@@ -1,7 +1,7 @@
 <template>
   <v-card v-if="orchestratorConfigSaved">
     <v-card-title>
-      プロセス一覧:({{ selectedFolder.DisplayName }})
+      {{ $t('message.menu_releases') }}: ({{ selectedFolder.DisplayName }})
       <v-spacer></v-spacer>
       <v-text-field
         v-model="search"
@@ -21,7 +21,7 @@
           <template v-slot:activator="{ on }">
             <v-icon v-on="on">fas fa-robot</v-icon>
           </template>
-          <span>ロボットグループでグルーピング</span>
+          <span>{{ $t('message.GroupingByRobotGroup') }}</span>
         </v-tooltip>
       </v-btn>
       <v-card-actions>
