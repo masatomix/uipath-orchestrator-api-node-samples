@@ -35,3 +35,10 @@ RobotType,RobotType,RobotType
 ライセンス取得済み？/取得日時,ライセンス取得済み？/取得日時,Licensed?
 取得マシン(s),取得マシン(s),Active Machine Names
 取得ロボット,取得ロボット,Active Robot
+Enterprise版,Enterprise版,Enterprise Edition
+Community版,Community版,Community Edition
+JSONで指定,JSONで指定,Set using JSON
+クリップボードにコピーしました,クリップボードにコピーしました,Copied to clipboard!
+保存,保存,Save
+JSONで直接記述してください,JSONで直接記述してください,Please describe it directly in JSON.
+保存完了です,保存完了です,Saved.

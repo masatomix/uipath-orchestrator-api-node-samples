@@ -70,9 +70,9 @@
         <v-icon small @click="deleteItem(item)">delete</v-icon>
       </template>-->
     </v-data-table>
-    <v-snackbar v-model="clipboard" bottom :timeout="2000" color="info"
-      >クリップボードにコピーしました</v-snackbar
-    >
+    <v-snackbar v-model="clipboard" bottom :timeout="2000" color="info">
+      {{ $t('message.クリップボードにコピーしました') }}
+    </v-snackbar>
   </v-card>
 </template>
 

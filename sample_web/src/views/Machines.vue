@@ -52,7 +52,7 @@
       </template>-->
     </v-data-table>
     <v-snackbar v-model="clipboard" bottom :timeout="2000" color="info">
-      クリップボードにコピーしました
+      {{ $t('message.クリップボードにコピーしました') }}
     </v-snackbar>
   </v-card>
 </template>
