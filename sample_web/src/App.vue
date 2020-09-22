@@ -66,7 +66,7 @@
           @click.stop="drawer = !drawer"
           v-if="loginStatus"
         ></v-app-bar-nav-icon>
-        <span class="hidden-sm-and-down">Orchestrator API Samples</span>
+        <span class="hidden-sm-and-down">{{ $t('message.AppName') }}</span>
       </v-toolbar-title>
 
       <div class="flex-grow-1"></div>

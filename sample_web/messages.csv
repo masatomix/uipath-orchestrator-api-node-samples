@@ -50,3 +50,5 @@ GroupingByRobotGroup,ロボットグループでグルーピング,Grouping by R
 GroupingByMachine,マシンでグルーピング,Grouping by Machine
 GroupingByUser,ユーザでグルーピング,Grouping by User
 FilteringByRobot,ロボットでフィルタ,Filtering by Robot
+AppName,Orchestrator API Samples,Orchestrator API Samples
+ジョブ実行,ジョブ実行,Start Job.
