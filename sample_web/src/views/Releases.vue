@@ -88,25 +88,30 @@ export default {
     filteredItems: [],
     fixedHeader: true,
     clipboard: false,
-    headers: [
-      { text: '項番', value: 'dispId' },
-      // { text: 'Name', value: 'Name' },
-      { text: 'ProcessKey', value: 'ProcessKey' },
-      { text: 'ProcessVersion', value: 'ProcessVersion' },
-      { text: 'EnvironmentName', value: 'EnvironmentName' },
-      // { text: '', value: 'data-table-expand' },
-      // { text: '更新日', value: 'updatedAt' },
-      // { text: '操作', align: 'center', value: 'action', sortable: false },
-    ],
     selectedRobot: null,
     loading: false,
     groupBy: null,
   }),
-  computed: mapState('appStore', {
-    orchestratorConfigSaved: 'orchestratorConfigSaved',
-    selectedFolder: 'selectedFolder',
-    selectedFolderId: state => state.selectedFolder.Id,
-  }),
+  computed: {
+    ...mapState('appStore', {
+      orchestratorConfigSaved: 'orchestratorConfigSaved',
+      selectedFolder: 'selectedFolder',
+      selectedFolderId: state => state.selectedFolder.Id,
+    }),
+
+    headers() {
+      return [
+        { text: this.$t('message.項番'), value: 'dispId' },
+        // { text: 'Name', value: 'Name' },
+        { text: 'Process Key', value: 'ProcessKey' },
+        { text: 'Process Version', value: 'ProcessVersion' },
+        { text: this.$t('message.ロボットグループ'), value: 'EnvironmentName' },
+        // { text: '', value: 'data-table-expand' },
+        // { text: '更新日', value: 'updatedAt' },
+        // { text: '操作', align: 'center', value: 'action', sortable: false },
+      ]
+    },
+  },
   created: async function() {
     if (this.orchestratorConfigSaved) {
       this.executeAPI()

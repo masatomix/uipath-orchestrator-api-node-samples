@@ -76,21 +76,25 @@ export default {
     filteredItems: [],
     fixedHeader: true,
     clipboard: false,
-    headers: [
-      { text: '項番', value: 'dispId' },
-      { text: 'Id', value: 'Id' },
-      { text: 'Value', value: 'Value' },
-      { text: 'Name', value: 'Name' },
-      // { text: '更新日', value: 'updatedAt' },
-      // { text: '操作', align: 'center', value: 'action', sortable: false },
-    ],
     loading: false,
   }),
-  computed: mapState('appStore', {
-    orchestratorConfigSaved: 'orchestratorConfigSaved',
-    selectedFolder: 'selectedFolder',
-    selectedFolderId: state => state.selectedFolder.Id,
-  }),
+  computed: {
+    ...mapState('appStore', {
+      orchestratorConfigSaved: 'orchestratorConfigSaved',
+      selectedFolder: 'selectedFolder',
+      selectedFolderId: state => state.selectedFolder.Id,
+    }),
+    headers() {
+      return [
+        { text: this.$t('message.項番'), value: 'dispId' },
+        { text: 'Id', value: 'Id' },
+        { text: 'Value', value: 'Value' },
+        { text: 'Name', value: 'Name' },
+        // { text: '更新日', value: 'updatedAt' },
+        // { text: '操作', align: 'center', value: 'action', sortable: false },
+      ]
+    },
+  },
   created: async function() {
     this.executeAPI()
   },

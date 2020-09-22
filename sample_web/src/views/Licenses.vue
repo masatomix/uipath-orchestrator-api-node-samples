@@ -13,7 +13,7 @@
     <!-- ここから重複感あり -->
     <v-card-title>
       Runtime Licenses
-      <span style="font-size: 0.8em">{{ runtimeLicensesStr }}</span>
+      <span style="font-size: 0.75em">{{ runtimeLicensesStr }}</span>
       <v-spacer></v-spacer>
       <v-text-field
         v-model="search"
@@ -88,7 +88,7 @@
     <!-- ここから重複感あり -->
     <v-card-title>
       Named User Licenses
-      <span style="font-size: 0.8em">{{ namedUserLicensesStr }}</span>
+      <span style="font-size: 0.75em">{{ namedUserLicensesStr }}</span>
       <v-spacer></v-spacer>
       <v-text-field
         v-model="search"
