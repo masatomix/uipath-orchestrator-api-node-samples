@@ -40,7 +40,7 @@
       <!-- <v-text-field
         v-model="enterpriseConfig.userinfo.organizationUnit"
         label="organizationUnit"
-      ></v-text-field> -->
+      ></v-text-field>-->
     </v-card-text>
 
     <v-card-text v-if="selectedRobotModeFlag === '1'">
@@ -93,9 +93,7 @@
 
 <script>
 // @ is an alias to /src
-import config from 'config'
-import { isEmpty, getConfigState } from '../myUtils'
-import { saveConfig } from '../configManager'
+import { saveConfig, restoreConfig } from '../configManager'
 import { mapState } from 'vuex'
 
 export default {
@@ -108,90 +106,65 @@ export default {
     saveFinished: false, // 保存オペをしたらtrue
     selectedRobotModeFlag: '0', // 今選択しているモード
     clipboard: false,
-    def_enterpriseConfig: {
-      userinfo: {
-        tenancyName: 'default',
-        usernameOrEmailAddress: 'admin',
-        password: '',
-        // organizationUnit: null,
-      },
-      serverinfo: {
-        servername: 'https://orchestrator.example.com',
-      },
-      token: {
-        access_token: '',
-      },
-    },
-    def_communityConfig: {
-      serverinfo: {
-        servername:
-          'https://platform.uipath.com/[AccountLogicalName]/[ServiceName]',
-        refresh_token: '[User Key]',
-        tenant_logical_name: '[Tenant Logical Name]',
-        client_id: '[Client Id]]',
-      },
-      token: {
-        access_token: '',
-      },
-    },
-    def_configText: '',
     enterpriseConfig: null,
     communityConfig: null,
     configText: '',
+
+    enterpriseConfigEtc: null,
+    communityConfigEtc: null,
+    jsonConfigEtc: null,
   }),
-  computed: mapState('appStore', ['orchestratorConfigSaved']),
+  computed: {
+    ...mapState('appStore', ['orchestratorConfigSaved']),
+    tokenGetDate() {
+      return {
+        '0': this.$store.state.appStore.enterpriseConfig.token,
+        '1': this.$store.state.appStore.communityConfig.token,
+        '2': this.$store.state.appStore.jsonConfig.token,
+      }
+    },
+    // env: () => process.env.NODE_ENV,
+    // firebaseConfig: () => firebaseConfig,
+  },
   created: function() {
-    // Vuexからとる(1)。あったらコレを使う
-    const vEnterpriseConfig = this.$store.state.appStore.enterpriseConfig
-    const vCommunityConfig = this.$store.state.appStore.communityConfig
-    const vJsonConfig = this.$store.state.appStore.jsonConfig
+    const retConfig = restoreConfig(this.$store)
 
-    const { isEnterprise, isCommunity } = getConfigState(config)
-
-    // 初期値を取得(2)。(1)がなかったら、コレを使う。
-    const def_enterpriseConfig = isEnterprise
-      ? config
-      : this.def_enterpriseConfig
-    const def_communityConfig = isCommunity ? config : this.def_communityConfig
-    const def_configText = this.def_configText
-
-    // (1) が空なら(2)。ある場合は(1)
-    this.enterpriseConfig = isEmpty(vEnterpriseConfig)
-      ? def_enterpriseConfig
-      : vEnterpriseConfig
-
-    this.communityConfig = isEmpty(vCommunityConfig)
-      ? def_communityConfig
-      : vCommunityConfig
-
-    this.configText = isEmpty(vJsonConfig)
-      ? def_configText
-      : JSON.stringify(vJsonConfig, null, 2)
+    this.enterpriseConfig = retConfig.enterpriseConfig
+    this.communityConfig = retConfig.communityConfig
+    this.configText = retConfig.configText
+    this.enterpriseConfigEtc = retConfig.enterpriseConfigEtc
+    this.communityConfigEtc = retConfig.communityConfigEtc
+    this.jsonConfigEtc = retConfig.jsonConfigEtc
   },
   methods: {
     save(selectedRobotModeFlag) {
       this.$store.dispatch('appStore/orchestratorConfigNotSaved')
-      saveConfig(this, selectedRobotModeFlag)
+      try {
+        saveConfig(this, this.$store, selectedRobotModeFlag)
+      } catch (error) {
+        alert(`エラーが発生しました: ${error}`)
+      }
     },
 
     copyClipboard(selectedRobotModeFlag) {
-      const copyJSON = {
-        '0': this.enterpriseConfig,
-        '1': this.communityConfig,
-        '2': this.configText ? JSON.parse(this.configText) : {},
-      }[selectedRobotModeFlag]
-
-      // console.log(JSON.stringify(copyJSON))
-
-      navigator.clipboard
-        .writeText(JSON.stringify(copyJSON, null, 2))
-        .then(() => {
-          // console.log('テキストコピー完了')
-          this.clipboard = true
-        })
-      // .catch(e => {
-      //   console.error(e)
-      // })
+      const copyJSONFunc = () => {
+        switch (selectedRobotModeFlag) {
+          case '0':
+            return this.enterpriseConfig
+          case '1':
+            return this.communityConfig
+          case '2':
+            return this.configText ? JSON.parse(this.configText) : {}
+        }
+      }
+      try {
+        const copyJSON = copyJSONFunc(selectedRobotModeFlag)
+        navigator.clipboard
+          .writeText(JSON.stringify(copyJSON, null, 2))
+          .then(() => (this.clipboard = true))
+      } catch (error) {
+        alertError(error)
+      }
     },
     toValue(robotModeFlag) {
       const map = {
@@ -202,8 +175,9 @@ export default {
       return map[robotModeFlag]
     },
   },
-  // created: function() {
-  //   console.log(config);
-  // }
+}
+const alertError = error => {
+  const message = 'JSON形式が不正のようです'
+  alert(`${message}: ${error}`)
 }
 </script>

@@ -7,6 +7,9 @@ export default {
     orchestratorConfigSaved: false,
     selectedRobotModeFlag: NaN,
     selectedFolder: null, // これは別でもいいかもしれない。
+    enterpriseConfigEtc: {},
+    communityConfigEtc: {},
+    jsonConfigEtc: {},
   }),
   mutations: {
     enterpriseConfig(state, enterpriseConfig) {
@@ -17,6 +20,15 @@ export default {
     },
     jsonConfig(state, jsonConfig) {
       state.jsonConfig = jsonConfig
+    },
+    enterpriseConfigEtc(state, enterpriseConfigEtc) {
+      state.enterpriseConfigEtc = enterpriseConfigEtc
+    },
+    communityConfigEtc(state, communityConfigEtc) {
+      state.communityConfigEtc = communityConfigEtc
+    },
+    jsonConfigEtc(state, jsonConfigEtc) {
+      state.jsonConfigEtc = jsonConfigEtc
     },
     selectedRobotModeFlag(state, selectedRobotModeFlag) {
       state.selectedRobotModeFlag = selectedRobotModeFlag
@@ -34,17 +46,20 @@ export default {
     },
     saveEnterpriseConfig(context, payload) {
       context.commit('enterpriseConfig', payload.config)
+      context.commit('enterpriseConfigEtc', payload.configEtc)
       context.commit('orchestratorConfigSaved', true)
       context.commit('selectedRobotModeFlag', payload.selectedRobotModeFlag)
     },
     saveCommunityConfig(context, payload) {
       context.commit('communityConfig', payload.config)
+      context.commit('communityConfigEtc', payload.configEtc)
       context.commit('orchestratorConfigSaved', true)
       context.commit('selectedRobotModeFlag', payload.selectedRobotModeFlag)
     },
     saveJsonConfig(context, payload) {
       const saveConfig = JSON.parse(payload.configText)
       context.commit('jsonConfig', saveConfig)
+      context.commit('jsonConfigEtc', payload.configEtc)
       context.commit('orchestratorConfigSaved', true)
       context.commit('selectedRobotModeFlag', payload.selectedRobotModeFlag)
     },
