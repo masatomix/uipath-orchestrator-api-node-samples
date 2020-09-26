@@ -147,7 +147,7 @@ export default {
       return this.items.filter(item => item.always === true)
     },
     mode() {
-      const config = getConfig(this)
+      const config = getConfig(this.$store)
       if (config) {
         const api = new OrchestratorApi(config)
         return api.isEnterprise ? '(Enterprise mode)' : '(Community mode)'

@@ -33,7 +33,7 @@ export default {
       return this.$store.state.appStore.orchestratorConfigSaved
     },
     urlStr() {
-      const config = getConfig(this)
+      const config = getConfig(this.$store)
       return config ? `(${config.serverinfo.servername})` : ''
     },
   },

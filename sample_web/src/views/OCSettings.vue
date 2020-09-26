@@ -122,7 +122,7 @@ export default {
     },
     async executeAPI() {
       this.loading = true
-      const config = getConfig(this)
+      const config = getConfig(this.$store)
       const api = new OrchestratorApi(config)
       // api.organizationUnitId = this.selectedFolderId
       try {
@@ -146,7 +146,7 @@ export default {
       // console.table(this.instances)
     },
     async downloadExcel() {
-      const config = getConfig(this)
+      const config = getConfig(this.$store)
       const api = new OrchestratorApi(config)
       const blob = await api.setting.save2ExcelBlob(this.filteredItems)
       saveAs(blob, 'settings.xlsx')

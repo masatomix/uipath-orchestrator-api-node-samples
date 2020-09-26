@@ -126,7 +126,7 @@ export default {
       this.loading = true
       // console.log(config);
       // console.log("test:", process.env.NODE_ENV);
-      const config = getConfig(this)
+      const config = getConfig(this.$store)
       // alert(JSON.stringify(config))
       const api = new OrchestratorApi(config)
       try {
@@ -161,7 +161,7 @@ export default {
     },
 
     async downloadExcel() {
-      const config = getConfig(this)
+      const config = getConfig(this.$store)
       const api = new OrchestratorApi(config)
       const blob = await api.robot.save2ExcelBlob(this.filteredItems)
       saveAs(blob, 'machines.xlsx')

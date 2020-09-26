@@ -354,14 +354,14 @@ export default {
     },
 
     async downloadExcel1() {
-      const config = getConfig(this)
+      const config = getConfig(this.$store)
       const api = new OrchestratorApi(config)
       const blob = await api.robot.save2ExcelBlob(this.filteredItems1)
       saveAs(blob, 'RuntimeLicenses.xlsx')
     },
 
     async downloadExcel2() {
-      const config = getConfig(this)
+      const config = getConfig(this.$store)
       const api = new OrchestratorApi(config)
       const blob = await api.robot.save2ExcelBlob(this.filteredItems2)
       saveAs(blob, 'NamedUserLicenses.xlsx')
@@ -447,7 +447,7 @@ export default {
 async function getApi(me) {
   me.loading1 = true
   me.loading2 = true
-  const config = getConfig(me)
+  const config = getConfig(me.$store)
   const api = new OrchestratorApi(config)
   api.organizationUnitId = me.selectedFolderId
   try {

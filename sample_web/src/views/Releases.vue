@@ -165,14 +165,14 @@ export default {
     },
 
     async downloadExcel() {
-      const config = getConfig(this)
+      const config = getConfig(this.$store)
       const api = new OrchestratorApi(config)
       const blob = await api.release.save2ExcelBlob(this.filteredItems)
       saveAs(blob, 'releases.xlsx')
     },
 
     async getReleases() {
-      const config = getConfig(this)
+      const config = getConfig(this.$store)
       const api = new OrchestratorApi(config)
       api.organizationUnitId = this.selectedFolderId
       try {
