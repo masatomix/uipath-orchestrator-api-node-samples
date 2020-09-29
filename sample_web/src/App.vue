@@ -61,12 +61,13 @@
       color="blue darken-3"
       dark
     >
-      <v-toolbar-title style="width: 300px" class="ml-0 pl-4">
+      <v-toolbar-title style="width: 500px" class="ml-0 pl-4">
         <v-app-bar-nav-icon
           @click.stop="drawer = !drawer"
           v-if="loginStatus"
         ></v-app-bar-nav-icon>
         <span class="hidden-sm-and-down">{{ $t('message.AppName') }}</span>
+        <span style="font-size: 0.75em">{{ mode }}</span>
       </v-toolbar-title>
 
       <div class="flex-grow-1"></div>
@@ -101,6 +102,8 @@ import firebase from 'firebase'
 import constants from '@/constants'
 import Folders from './components/Folders'
 import OcFooter from './components/OcFooter'
+import OrchestratorApi from 'uipath-orchestrator-api-node'
+import { getConfig } from './configManager'
 
 export default {
   metaInfo() {
@@ -142,6 +145,14 @@ export default {
         return this.items
       }
       return this.items.filter(item => item.always === true)
+    },
+    mode() {
+      const config = getConfig(this.$store)
+      if (config) {
+        const api = new OrchestratorApi(config)
+        return api.isEnterprise ? '(Enterprise mode)' : '(Community mode)'
+      }
+      return ''
     },
   },
   data: () => ({

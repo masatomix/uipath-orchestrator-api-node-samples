@@ -8,6 +8,9 @@ export default {
   serverinfo: {
     servername: 'https://orch.example1.xyz',
   },
+  token: {
+    access_token: '',
+  },
   logging: [
     {
       name: 'main',

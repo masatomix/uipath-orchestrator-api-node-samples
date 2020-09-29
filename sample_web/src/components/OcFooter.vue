@@ -7,7 +7,10 @@
     <button v-on:click="changeLocale('en')" style="margin: 5px">
       <flag iso="us" />
     </button>
-    <div>&copy; Masatomi KINO. {{ new Date().getFullYear() }} {{ urlStr }}</div>
+    <div>
+      &copy; Masatomi KINO.{{ new Date().getFullYear() }}
+      <span style="font-size: 0.8em">{{ urlStr }}</span>
+    </div>
   </v-footer>
 </template>
 
@@ -30,7 +33,7 @@ export default {
       return this.$store.state.appStore.orchestratorConfigSaved
     },
     urlStr() {
-      const config = getConfig(this)
+      const config = getConfig(this.$store)
       return config ? `(${config.serverinfo.servername})` : ''
     },
   },

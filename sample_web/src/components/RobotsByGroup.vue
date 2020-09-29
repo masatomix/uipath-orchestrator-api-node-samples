@@ -58,7 +58,7 @@ export default {
   methods: {
     async executeAPI() {
       this.loading = true
-      const config = getConfig(this)
+      const config = getConfig(this.$store)
       const api = new OrchestratorApi(config)
       api.organizationUnitId = this.selectedFolderId
       try {
@@ -82,7 +82,7 @@ export default {
       this.localDialog = true
     },
     async startJobs(process, robotName) {
-      const api = new OrchestratorApi(getConfig(this))
+      const api = new OrchestratorApi(getConfig(this.$store))
       await api.authenticate()
 
       // const robotNames: string[] = await createRobotNames(api)

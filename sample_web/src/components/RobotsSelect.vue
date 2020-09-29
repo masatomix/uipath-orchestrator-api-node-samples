@@ -62,7 +62,7 @@ export default {
   },
   methods: {
     async executeAPI() {
-      const config = getConfig(this)
+      const config = getConfig(this.$store)
       if (config) {
         const api = new OrchestratorApi(config)
         api.organizationUnitId = this.selectedFolderId
