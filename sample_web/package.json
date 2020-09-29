@@ -20,7 +20,7 @@
     "file-saver": "^2.0.2",
     "firebase": "^7.17.1",
     "moment-timezone": "^0.5.31",
-    "uipath-orchestrator-api-node": "^0.8.1",
+    "uipath-orchestrator-api-node": "0.8.2",
     "vue": "^2.6.11",
     "vue-flag-icon": "^1.0.6",
     "vue-i18n": "^8.21.1",

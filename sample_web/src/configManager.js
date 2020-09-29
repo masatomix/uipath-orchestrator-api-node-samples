@@ -107,14 +107,17 @@ const enterpriseSaveLogic = (me, store, selectedRobotModeFlag) => {
     .authenticate()
     .then(authResult => {
       me.enterpriseConfig.token.access_token = api.accessToken
-      if (!api.isToken) {
+      if (api.isToken) {
+        me.enterpriseConfig.token.tokenGetDate = NaN
+        me.enterpriseConfigEtc = {}
+      } else {
         me.enterpriseConfig.token.tokenGetDate = Date.now()
+        me.enterpriseConfigEtc = authResult
       }
-      me.enterpriseConfigEtc = authResult
       store.dispatch('appStore/saveEnterpriseConfig', {
         config: me.enterpriseConfig,
         selectedRobotModeFlag: selectedRobotModeFlag,
-        configEtc: authResult,
+        configEtc: me.enterpriseConfigEtc,
       })
       // 選択した方だけVuexへ保存
       me.saveFinished = true
@@ -128,7 +131,9 @@ const communitySaveLogic = (me, store, selectedRobotModeFlag) => {
     .authenticate()
     .then(authResult => {
       me.communityConfig.token.access_token = api.accessToken
-      if (!api.isToken) {
+      if (api.isToken) {
+        me.communityConfig.token.tokenGetDate = NaN
+      } else {
         me.communityConfig.token.tokenGetDate = Date.now()
       }
       me.communityConfigEtc = authResult
@@ -149,17 +154,13 @@ const jsonSaveLogic = (me, store, selectedRobotModeFlag) => {
   api
     .authenticate()
     .then(authResult => {
+      const tokenGetDate = api.isToken ? NaN : Date.now()
       Object.assign(jsonConfig, {
-        token: { access_token: api.accessToken },
+        token: {
+          access_token: api.accessToken,
+          tokenGetDate: tokenGetDate,
+        },
       })
-      if (!api.isToken) {
-        Object.assign(jsonConfig, {
-          token: {
-            access_token: api.accessToken,
-            tokenGetDate: Date.now(),
-          },
-        })
-      }
       me.configText = JSON.stringify(jsonConfig)
       store.dispatch('appStore/saveJsonConfig', {
         configText: me.configText,
@@ -174,9 +175,7 @@ const jsonSaveLogic = (me, store, selectedRobotModeFlag) => {
 
 const alertError = error => {
   const message =
-    Object.keys(error).length === 0
-      ? '何らかのエラーが発生しました'
-      : JSON.stringify(error)
+    Object.keys(error).length === 0 ? 'Unknown Error' : JSON.stringify(error)
   alert(message)
 }
 

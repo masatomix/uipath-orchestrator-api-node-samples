@@ -37,6 +37,11 @@
         v-model="enterpriseConfig.token.access_token"
         :label="$t('message.token')"
       ></v-text-field>
+      <span v-if="tokenGetDate['0']"
+        >{{ $t('message.tokenAcquisitionDate') }}:{{
+          tokenGetDate['0'].tokenGetDate | toDate
+        }}</span
+      >
       <!-- <v-text-field
         v-model="enterpriseConfig.userinfo.organizationUnit"
         label="organizationUnit"
@@ -64,6 +69,11 @@
         v-model="communityConfig.token.access_token"
         :label="$t('message.token')"
       ></v-text-field>
+      <span v-if="tokenGetDate['1']"
+        >{{ $t('message.tokenAcquisitionDate') }}:{{
+          tokenGetDate['1'].tokenGetDate | toDate
+        }}</span
+      >
     </v-card-text>
 
     <v-card-text v-if="selectedRobotModeFlag === '2'">
@@ -73,6 +83,11 @@
         v-model="configText"
         rows="13"
       ></v-textarea>
+      <span v-if="tokenGetDate['2']"
+        >{{ $t('message.tokenAcquisitionDate') }}:{{
+          tokenGetDate['2'].tokenGetDate | toDate
+        }}</span
+      >
     </v-card-text>
     <v-card-actions>
       <v-btn v-on:click="save(selectedRobotModeFlag)">
@@ -173,6 +188,13 @@ export default {
         '2': 'message.JSONで指定',
       }
       return map[robotModeFlag]
+    },
+  },
+  filters: {
+    toDate(date) {
+      if (date) {
+        return new Date(date).toLocaleString()
+      }
     },
   },
 }

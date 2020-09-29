@@ -60,3 +60,4 @@ token,token (オプション),token (optional)
 tenant_logical_name,テナントの論理名 (必須),Tenant Logical Name (required)
 refresh_token,Refresh Token (tokenを使うときはオプション),Refresh Token (optional when using token)
 client_id,クライアント ID (tokenを使うときはオプション),Client Id (optional when using token)
+tokenAcquisitionDate,token 取得日,Token Acquisition Date
