@@ -133,14 +133,15 @@ const communitySaveLogic = (me, store, selectedRobotModeFlag) => {
       me.communityConfig.token.access_token = api.accessToken
       if (api.isToken) {
         me.communityConfig.token.tokenGetDate = NaN
+        me.communityConfigEtc = {}
       } else {
         me.communityConfig.token.tokenGetDate = Date.now()
+        me.communityConfigEtc = authResult
       }
-      me.communityConfigEtc = authResult
       store.dispatch('appStore/saveCommunityConfig', {
         config: me.communityConfig,
         selectedRobotModeFlag: selectedRobotModeFlag,
-        configEtc: authResult,
+        configEtc: me.communityConfigEtc,
       })
       // 選択した方だけVuexへ保存
       me.saveFinished = true
