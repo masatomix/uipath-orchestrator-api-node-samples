@@ -1,0 +1,20 @@
+{
+  "name": "type",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Masatomi KINO <masatomix@ki-no.org> (http://qiita.com/masatomix)",
+  "license": "ISC",
+  "dependencies": {
+    "open": "^8.4.0",
+    "request": "^2.88.2"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.3",
+    "@types/request": "^2.48.8",
+    "ts-node": "^10.8.2"
+  }
+}
