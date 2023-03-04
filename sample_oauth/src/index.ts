@@ -33,19 +33,19 @@ const main = async (): Promise<void> => {
     const grant_type = 'authorization_code'
 
     const option = {
-      uri: token_endpoint,
+      url: token_endpoint,
       method: 'POST',
       headers: {
         'content-type': 'application/x-www-form-urlencoded',
+        // 'content-type': 'application/json',
       },
-      form: {
+      data: {
         redirect_uri,
         client_id,
         grant_type,
         code,
         code_verifier
-      },
-      json: true,
+      }
     }
 
     // print(option)
@@ -115,7 +115,7 @@ function print(obj: unknown) {
 async function getAllUsers(uri_orch: string, access_token: string) {
 
   const option = {
-    uri: `${uri_orch}/odata/Users`,
+    url: `${uri_orch}/odata/Users`,
     method: 'GET',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
@@ -138,7 +138,7 @@ async function getAllUsers(uri_orch: string, access_token: string) {
 
 async function getAllMachineKeys(uri_orch: string, access_token: string) {
   const option = {
-    uri: `${uri_orch}/odata/Machines`,
+    url: `${uri_orch}/odata/Machines`,
     method: 'GET',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',

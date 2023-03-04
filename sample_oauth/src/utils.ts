@@ -1,7 +1,9 @@
 import { IncomingMessage, ServerResponse } from 'http'
 import * as http from 'http'
+import * as https from 'https'
 import * as url from 'url'
-import * as request from 'request'
+import axios, { AxiosRequestConfig } from 'axios'
+// import * as request from 'request'
 
 
 // https://qiita.com/fukasawah/items/db7f0405564bdc37820e 感謝！
@@ -66,15 +68,36 @@ export const getAuthorizationCode = async (redirect_uri: string): Promise<string
     })
 }
 
-// Requestを送信して、ResponseのBodyデータを返す。
-export const doRequest = async (option: any): Promise<any> => {
-    option = Object.assign({}, option, {
-        // proxy: 'http://127.0.0.1:8888',
-        strictSSL: false,
-    })
+// // Requestを送信して、ResponseのBodyデータを返す。
+// export const doRequest1 = async (option: any): Promise<any> => {
+//     option = {
+//         ...option,
+//         ...{
+//             proxy: 'http://127.0.0.1:8888',
+//             strictSSL: false,
+//         }
+//     }
 
-    return await new Promise<any>((resolve, reject) => {
-        request(option, (error: any, response: any, body: any) =>
-            !error && response.statusCode === 200 ? resolve(body) : reject(body))
-    })
+//     return await new Promise<any>((resolve, reject) => {
+//         request(option, (error: any, response: any, body: any) =>
+//             !error && response.statusCode === 200 ? resolve(body) : reject(body))
+//     })
+// }
+
+
+export const doRequest = async (config: AxiosRequestConfig): Promise<any> => {
+    config = {
+        ...config,
+        httpsAgent: new https.Agent({
+            rejectUnauthorized: false,
+        }),
+        proxy: {
+            protocol: 'http',
+            host: '127.0.0.1',
+            port: 8888
+        }
+    }
+
+    return await (await axios(config)).data
 }
+
