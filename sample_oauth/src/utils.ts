@@ -1,6 +1,7 @@
-import http, { IncomingMessage, ServerResponse } from 'http'
-import url from 'url'
-import request from 'request'
+import { IncomingMessage, ServerResponse } from 'http'
+import * as http from 'http'
+import * as url from 'url'
+import * as request from 'request'
 
 
 // https://qiita.com/fukasawah/items/db7f0405564bdc37820e 感謝！
@@ -10,12 +11,14 @@ export const getRandomString = (): string => {
     const randomValue = Array.from(Array(N))
         .map(() => S[Math.floor(Math.random() * S.length)])
         .join('')
+
     return randomValue
 }
 
-export const getAuthorizationCode = (redirect_uri: string): Promise<string> => {
-    const portNumber: number = Number(new URL(redirect_uri).port)
-    return new Promise<string>((resolve, reject) => {
+export const getAuthorizationCode = async (redirect_uri: string): Promise<string> => {
+    const portNumber = Number(new URL(redirect_uri).port)
+
+    return await new Promise<string>((resolve, reject) => {
         const server = startWebServer()
 
         // endFlagがtrueだったり、60s経っていたらサーバを落とす
@@ -57,18 +60,20 @@ export const getAuthorizationCode = (redirect_uri: string): Promise<string> => {
                 }
             })
             server.listen(portNumber, () => console.log(`Server running at ${redirect_uri} .. (${limitCounter} 秒でタイムアウトします。)`))
+
             return server
         }
     })
 }
 
 // Requestを送信して、ResponseのBodyデータを返す。
-export const doRequest = (option: any): Promise<any> => {
-    // option = Object.assign({}, option, {
-    // proxy: 'http://127.0.0.1:8888',
-    //     strictSSL: false,
-    // })
-    return new Promise<any>((resolve, reject) => {
+export const doRequest = async (option: any): Promise<any> => {
+    option = Object.assign({}, option, {
+        // proxy: 'http://127.0.0.1:8888',
+        strictSSL: false,
+    })
+
+    return await new Promise<any>((resolve, reject) => {
         request(option, (error: any, response: any, body: any) =>
             !error && response.statusCode === 200 ? resolve(body) : reject(body))
     })
